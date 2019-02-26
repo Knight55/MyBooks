@@ -10,4 +10,9 @@
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ReactiveUI" Version="9.11.1" />
+    <PackageReference Include="Refit" Version="4.6.90" />
+  </ItemGroup>
+
 </Project>
