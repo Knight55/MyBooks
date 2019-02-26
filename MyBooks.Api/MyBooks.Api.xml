@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyBooks.Api</name>
+    </assembly>
+    <members>
+        <member name="M:MyBooks.Api.Controllers.BooksController.Get(System.Int32)">
+            <summary>
+            Get a specific book with the given identifier.
+            </summary>
+            <param name="id">Identifier of the book.</param>
+            <returns>Returns a specific book with the given identifier.</returns>
+            <response code="200">Returns a specific book with the given identifier.</response>
+        </member>
+        <member name="M:MyBooks.Api.Controllers.BooksController.Post(MyBooks.Api.Dtos.Book)">
+            <summary>
+            Insert the given book.
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="P:MyBooks.Api.Dtos.Book.Title">
+            <summary>
+            The title of the book.
+            </summary>
+        </member>
+    </members>
+</doc>
