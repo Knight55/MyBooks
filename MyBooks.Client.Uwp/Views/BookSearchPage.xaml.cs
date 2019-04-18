@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Disposables;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using MyBooks.Client.ViewModels;
 using ReactiveUI;
@@ -11,6 +12,13 @@ namespace MyBooks.Client.Uwp.Views
     /// </summary>
     public sealed partial class BookSearchPage : Page, IViewFor<BookSearchViewModel>
     {
+        public static readonly DependencyProperty ViewModelProperty = DependencyProperty
+            .Register(
+                nameof(ViewModel),
+                typeof(BookSearchViewModel),
+                typeof(BookSearchPage),
+                new PropertyMetadata(null));
+
         public BookSearchPage()
         {
             this.InitializeComponent();
@@ -27,16 +35,16 @@ namespace MyBooks.Client.Uwp.Views
             });
         }
 
+        public BookSearchViewModel ViewModel
+        {
+            get => (BookSearchViewModel)GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
+        }
+
         object IViewFor.ViewModel
         {
             get => ViewModel;
             set => ViewModel = (BookSearchViewModel)value;
-        }
-
-        public BookSearchViewModel ViewModel
-        {
-            get => (BookSearchViewModel) DataContext;
-            set => DataContext = value;
         }
     }
 }

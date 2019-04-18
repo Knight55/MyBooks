@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
@@ -17,7 +18,7 @@ namespace MyBooks.Client.ViewModels
         public IScreen HostScreen { get; }
         private readonly IMyBookApiService _myBookApiService;
 
-        private string _searchTerm;
+        private string _searchTerm = "";
         public string SearchTerm
         {
             get => _searchTerm;
@@ -27,8 +28,8 @@ namespace MyBooks.Client.ViewModels
         private readonly ObservableAsPropertyHelper<IEnumerable<Book>> _results;
         public IEnumerable<Book> Results => _results.Value;
 
-        private readonly ObservableAsPropertyHelper<bool> _isAvailable;
-        public bool IsAvailable => _isAvailable.Value;
+        //private readonly ObservableAsPropertyHelper<bool> _isAvailable;
+        //public bool IsAvailable => _isAvailable.Value;
 
         //public ReactiveCommand<Book, Unit> GoToBookDetails { get; }
 
@@ -53,10 +54,12 @@ namespace MyBooks.Client.ViewModels
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .ToProperty(this, x => x.Results);
 
-            _isAvailable = this
-                .WhenAnyValue(x => x.Results)
-                .Select(results => results != null)
-                .ToProperty(this, x => x.IsAvailable);
+            _results.ThrownExceptions.Subscribe(ex => { Debug.WriteLine(ex.Message); });
+
+            //_isAvailable = this
+            //    .WhenAnyValue(x => x.Results)
+            //    .Select(results => results != null)
+            //    .ToProperty(this, x => x.IsAvailable);
         }
 
         /// <summary>
