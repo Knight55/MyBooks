@@ -8,45 +8,48 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MyBooks.Api.Mapping;
 using MyBooks.Bll.Context;
 using MyBooks.Bll.Entities;
+using MyBooks.Bll.Services;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace MyBooks.Api
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            // Logging
             services.AddLogging(loggingBuilder =>
             {
                 loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
                 loggingBuilder.AddConsole();
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options
-                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
-
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddMvc(o => o.MaxModelValidationErrors = 50)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(json => json.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
+            // Swagger
             services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("v1", new Info
@@ -63,11 +66,52 @@ namespace MyBooks.Api
                 o.DescribeAllEnumsAsStrings();
             });
 
-            //TODO: Add services
+            // DBContext
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            // Mvc
+            services.AddMvc(o => o.MaxModelValidationErrors = 50)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(json => json.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            // Identity
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Authentication
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5001";
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = "myBooksApi";
+                    options.ApiSecret = "secret";
+                });
+
+            // Authorization
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    "AdminOnly",
+                    policy => policy.RequireClaim("Level", "Admin"));
+            });
+
+            // Services
+            services.AddSingleton(MapperConfig.Configure());
+            services.AddTransient<IBookService, BookService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="context"></param>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -84,6 +128,8 @@ namespace MyBooks.Api
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -93,6 +139,8 @@ namespace MyBooks.Api
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBooks API v1"));
+
+            context.Seed();
         }
     }
 }
