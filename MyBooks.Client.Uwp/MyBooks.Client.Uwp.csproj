@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.17763.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.15063.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -123,6 +123,12 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\BookSearchPage.xaml.cs">
+      <DependentUpon>BookSearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -149,14 +155,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\BookSearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.3</Version>
+      <Version>6.2.8</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI">
+      <Version>9.13.1</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Events">
+      <Version>9.13.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\" />
+    <ProjectReference Include="..\MyBooks.Client\MyBooks.Client.csproj">
+      <Project>{5224aa7c-77c0-46d2-99c4-2d5eeca3d5a5}</Project>
+      <Name>MyBooks.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyBooks.Dto\MyBooks.Dto.csproj">
+      <Project>{8b0132ca-7573-451a-b1fa-5ee4e604042e}</Project>
+      <Name>MyBooks.Dto</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
