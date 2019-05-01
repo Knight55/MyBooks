@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -84,7 +85,7 @@ namespace MyBooks.Api
 
             // Authentication
             services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
+                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = "http://localhost:5001";
                     options.RequireHttpsMetadata = false;
@@ -110,8 +111,7 @@ namespace MyBooks.Api
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        /// <param name="context"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -139,8 +139,6 @@ namespace MyBooks.Api
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBooks API v1"));
-
-            context.Seed();
         }
     }
 }

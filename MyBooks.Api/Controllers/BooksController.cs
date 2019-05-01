@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using AutoMapper;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyBooks.Bll.Services;
@@ -12,7 +13,7 @@ namespace MyBooks.Api.Controllers
     /// Public API controller for books.
     /// </summary>
     [Route("api/[controller]")]
-    //[Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     public class BooksController : ControllerBase
     {
