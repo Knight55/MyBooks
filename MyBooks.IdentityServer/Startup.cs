@@ -58,7 +58,7 @@ namespace MyBooks.IdentityServer
 
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
         }
     }
