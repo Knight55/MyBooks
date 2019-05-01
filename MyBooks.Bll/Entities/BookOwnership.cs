@@ -2,7 +2,6 @@
 
 namespace MyBooks.Bll.Entities
 {
-    [Table("BOOKOWNERSHIP")]
     public class BookOwnership
     {
         public int Id { get; set; }

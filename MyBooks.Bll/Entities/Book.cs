@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBooks.Bll.Entities
 {
-    [Table("BOOK")]
     public class Book
     {
         public int Id { get; set; }

@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyBooks.Bll.Entities
 {
-    [Table("AUTHOR")]
     public class Author
     {
         public int Id { get; set; }
