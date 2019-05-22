@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using MyBooks.Api.Mapping;
 using MyBooks.Bll.Context;
 using MyBooks.Bll.Entities;
+using MyBooks.Bll.Exceptions;
 using MyBooks.Bll.Services;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
@@ -26,16 +29,16 @@ namespace MyBooks.Api
         /// <summary>
         /// 
         /// </summary>
+        public IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public IConfiguration Configuration { get; }
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
@@ -67,6 +70,16 @@ namespace MyBooks.Api
                 o.DescribeAllEnumsAsStrings();
             });
 
+            services.AddProblemDetails(options =>
+            {
+                options.IncludeExceptionDetails = ctx => false;
+                options.Map<EntityNotFoundException>(ex => new ProblemDetails
+                {
+                    Title = "Invalid ID",
+                    Status = StatusCodes.Status404NotFound
+                });
+            });
+
             // DBContext
             services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -77,11 +90,6 @@ namespace MyBooks.Api
             services.AddMvc(o => o.MaxModelValidationErrors = 50)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(json => json.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
-            // Identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
 
             // Authentication
             services.AddAuthentication("Bearer")
@@ -113,32 +121,33 @@ namespace MyBooks.Api
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                //app.UseHsts();
-                app.UseExceptionHandler("/error");
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            //    //app.UseHsts();
+            //    app.UseExceptionHandler("/error");
+            //}
 
             //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBooks API v1"));
+
             app.UseAuthentication();
 
+            app.UseProblemDetails();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBooks API v1"));
         }
     }
 }

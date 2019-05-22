@@ -13,7 +13,7 @@ namespace MyBooks.Api.Controllers
     /// Public API controller for books.
     /// </summary>
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     public class BooksController : ControllerBase
     {
@@ -32,10 +32,9 @@ namespace MyBooks.Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get a list of all books.
         /// </summary>
-        /// <returns></returns>
-        //[Authorize(AuthenticationSchemes = "Bearer", Policy = "AdminOnly")]
+        /// <returns>Returns all books.</returns>
         [HttpGet]
         public IActionResult Get()
         {
@@ -70,8 +69,8 @@ namespace MyBooks.Api.Controllers
         /// <summary>
         /// Insert the given book.
         /// </summary>
-        /// <param name="book"></param>
-        /// <returns></returns>
+        /// <param name="book">The book to be inserted.</param>
+        /// <returns>Returns the created book.</returns>
         [HttpPost]
         [ProducesResponseType(typeof(Book), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(Dictionary<string, string[]>), (int)HttpStatusCode.BadRequest)]
