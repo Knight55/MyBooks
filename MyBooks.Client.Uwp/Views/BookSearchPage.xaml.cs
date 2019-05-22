@@ -32,6 +32,9 @@ namespace MyBooks.Client.Uwp.Views
 
                 this.Bind(ViewModel, vm => vm.SearchTerm, v => v.searchTextBox.Text)
                     .DisposeWith(disposableRegistration);
+
+                this.BindCommand(ViewModel, vm => vm.DeleteBookCommand, v => v.deleteButton)
+                    .DisposeWith(disposableRegistration);
             });
         }
 

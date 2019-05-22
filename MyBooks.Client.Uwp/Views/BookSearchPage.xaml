@@ -18,14 +18,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock FontSize="16" FontWeight="SemiBold"
                    VerticalAlignment="Center" Text="Search books by title: "/>
         <TextBox x:Name="searchTextBox" Grid.Column="1" Grid.Row="0" Margin="6 0 0 0" />
         <ListBox x:Name="bookResultsListBox" Margin="0, 6, 0, 0"
                  HorizontalContentAlignment="Stretch"
+                 VerticalContentAlignment="Stretch"
                  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="dtos:Book">
                     <Grid>
@@ -45,5 +48,25 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Button x:Name="deleteButton" Margin="10,0" CommandParameter="{x:Bind bookResultsListBox.SelectedItem}">
+                <StackPanel Orientation="Vertical">
+                    <SymbolIcon Symbol="Delete" HorizontalAlignment="Center" />
+                    <TextBlock Text="Delete" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="addButton" Margin="10,0">
+                <StackPanel Orientation="Vertical">
+                    <SymbolIcon Symbol="Add" HorizontalAlignment="Center" />
+                    <TextBlock Text="Add" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="modifyButton" Margin="10,0">
+                <StackPanel Orientation="Vertical">
+                    <SymbolIcon Symbol="Refresh" HorizontalAlignment="Center" />
+                    <TextBlock Text="Update" HorizontalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>
