@@ -14,6 +14,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Exit" Click="OnExit" />
+                <MenuItem Header="Add new book" Click="OnAddNewBook" />
             </MenuItem>
         </Menu>
         <rxui:RoutedViewHost

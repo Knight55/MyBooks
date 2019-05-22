@@ -56,10 +56,11 @@
             </TextBlock>
             <ScrollViewer Margin="6">
                 <TextBox x:Name="summaryTextBox" TextWrapping="Wrap"
-                         IsReadOnly="True"
+                         IsReadOnly="False"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"/>
             </ScrollViewer>
+            <Button x:Name="updateButton" Content="Update" HorizontalAlignment="Left" />
         </StackPanel>
         <Button x:Name="backButton" Grid.Row="1" Grid.Column="0"
                 VerticalAlignment="Bottom" HorizontalAlignment="Left"

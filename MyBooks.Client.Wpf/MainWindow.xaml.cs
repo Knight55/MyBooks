@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MyBooks.Client.ViewModels;
+using MyBooks.Client.Wpf.Views;
 using ReactiveUI;
 using Splat;
 
@@ -27,7 +28,7 @@ namespace MyBooks.Client.Wpf
         public MainWindow()
         {
             InitializeComponent();
-            ViewModel = new AppViewModel(Locator.Current.GetService<IScreen>());
+            ViewModel = Locator.Current.GetService<AppViewModel>(); //new AppViewModel(Locator.Current.GetService<IScreen>());
 
             this.WhenActivated(disposableRegistration =>
             {
@@ -44,6 +45,17 @@ namespace MyBooks.Client.Wpf
         private void OnExit(object sender, RoutedEventArgs args)
         {
             Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnAddNewBook(object sender, RoutedEventArgs args)
+        {
+            var newBookWindow = new NewBookWindow();
+            newBookWindow.Show();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace MyBooks.Client.Wpf.Views
                 this.OneWayBind(ViewModel, vm => vm.Rating, v => v.ratingRun.Text)
                     .DisposeWith(disposableRegistration);
 
-                this.OneWayBind(ViewModel, vm => vm.Summary, v => v.summaryTextBox.Text)
+                this.Bind(ViewModel, vm => vm.Summary, v => v.summaryTextBox.Text)
                     .DisposeWith(disposableRegistration);
 
                 this.OneWayBind(ViewModel, vm => vm.CoverUrl, v => v.coverImage.Source,
@@ -41,6 +41,9 @@ namespace MyBooks.Client.Wpf.Views
                     .DisposeWith(disposableRegistration);
 
                 this.BindCommand(ViewModel, vm => vm.OpenGoodreadsUrl, v => v.goodreadsLink)
+                    .DisposeWith(disposableRegistration);
+
+                this.BindCommand(ViewModel, vm => vm.UpdateBookCommand, v => v.updateButton)
                     .DisposeWith(disposableRegistration);
             });
         }

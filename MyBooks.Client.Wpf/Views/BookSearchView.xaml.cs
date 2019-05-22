@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using MyBooks.Client.ViewModels;
 using MyBooks.Dto.Dtos;
@@ -43,6 +44,21 @@ namespace MyBooks.Client.Wpf.Views
                         }
                     });
             });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnDeleteButtonClicked(object sender, RoutedEventArgs args)
+        {
+            var button = (Button) sender;
+            var book = (Book) button?.DataContext;
+            if (book != null)
+            {
+                ViewModel.DeleteBookCommand.Execute(book.Id).Subscribe();
+            }
         }
     }
 }
