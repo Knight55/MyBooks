@@ -36,9 +36,6 @@ namespace MyBooks.IdentityServer
                     ClientId = "native.hybrid",
                     ClientName = "Native Client (Hybrid with PKCE)",
 
-                    RedirectUris = {"https://notused"},
-                    PostLogoutRedirectUris = {"https://notused"},
-
                     RequireClientSecret = false,
 
                     AllowedGrantTypes = GrantTypes.Hybrid,
