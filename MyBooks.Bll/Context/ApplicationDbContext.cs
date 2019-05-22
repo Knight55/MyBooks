@@ -42,7 +42,7 @@ namespace MyBooks.Bll.Context
                     new Book
                     {
                         Id = 4, Title = "Red Rising", Genre = "Scifi",
-                        GoodreadsId = "7235533-the-way-of-kings", CoverImagePath = "wayofkings.jpg"
+                        GoodreadsId = "15839976-red-rising", CoverImagePath = "redrising.jpg"
                     },
                     new Book
                     {
