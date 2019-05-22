@@ -28,10 +28,10 @@ namespace MyBooks.Client.ViewModels
         private readonly ObservableAsPropertyHelper<IEnumerable<Book>> _results;
         public IEnumerable<Book> Results => _results.Value;
 
-        //private readonly ObservableAsPropertyHelper<bool> _isAvailable;
-        //public bool IsAvailable => _isAvailable.Value;
+        private readonly ObservableAsPropertyHelper<bool> _isAvailable;
+        public bool IsAvailable => _isAvailable.Value;
 
-        //public ReactiveCommand<Book, Unit> GoToBookDetails { get; }
+        public ReactiveCommand<Book, Unit> GoToBookDetails { get; }
         public ReactiveCommand<Book, Unit> DeleteBookCommand { get; }
 
         public BookSearchViewModel(IScreen hostScreen, IMyBookApiService myBookApiService)
@@ -39,12 +39,12 @@ namespace MyBooks.Client.ViewModels
             HostScreen = hostScreen;
             _myBookApiService = myBookApiService;
 
-            //GoToBookDetails = ReactiveCommand.Create<Book>(b =>
-            //{
-            //    var bookDetailsViewModel = Locator.Current.GetService<BookDetailsViewModel>();
-            //    bookDetailsViewModel.Book = b;
-            //    HostScreen.Router.Navigate.Execute(bookDetailsViewModel).Subscribe();
-            //});
+            GoToBookDetails = ReactiveCommand.Create<Book>(b =>
+            {
+                var bookDetailsViewModel = Locator.Current.GetService<BookDetailsViewModel>();
+                bookDetailsViewModel.Book = b;
+                HostScreen.Router.Navigate.Execute(bookDetailsViewModel).Subscribe();
+            });
             DeleteBookCommand = ReactiveCommand.CreateFromTask<Book>(async b =>
             {
                 await GetBooks("", CancellationToken.None);
@@ -66,10 +66,10 @@ namespace MyBooks.Client.ViewModels
 
             _results.ThrownExceptions.Subscribe(ex => { Debug.WriteLine(ex.Message); });
 
-            //_isAvailable = this
-            //    .WhenAnyValue(x => x.Results)
-            //    .Select(results => results != null)
-            //    .ToProperty(this, x => x.IsAvailable);
+            _isAvailable = this
+                .WhenAnyValue(x => x.Results)
+                .Select(results => results != null)
+                .ToProperty(this, x => x.IsAvailable);
         }
 
         /// <summary>

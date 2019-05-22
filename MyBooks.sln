@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBooks.Dto", "MyBooks.Dto\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBooks.IdentityServer", "MyBooks.IdentityServer\MyBooks.IdentityServer.csproj", "{86E1CFEA-CC02-409B-8BB8-4A05F78B690C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBooks.Client.Wpf", "MyBooks.Client.Wpf\MyBooks.Client.Wpf.csproj", "{51BC9361-287E-4F8E-8931-ECAC369348C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -155,6 +157,26 @@ Global
 		{86E1CFEA-CC02-409B-8BB8-4A05F78B690C}.Release|x64.Build.0 = Release|Any CPU
 		{86E1CFEA-CC02-409B-8BB8-4A05F78B690C}.Release|x86.ActiveCfg = Release|Any CPU
 		{86E1CFEA-CC02-409B-8BB8-4A05F78B690C}.Release|x86.Build.0 = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|ARM.Build.0 = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|x64.Build.0 = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Debug|x86.Build.0 = Debug|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|ARM.Build.0 = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|ARM64.Build.0 = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|x64.ActiveCfg = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|x64.Build.0 = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{51BC9361-287E-4F8E-8931-ECAC369348C5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
