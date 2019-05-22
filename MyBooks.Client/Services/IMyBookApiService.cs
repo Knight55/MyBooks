@@ -15,5 +15,14 @@ namespace MyBooks.Client.Services
 
         [Get("/api/Books/Search/{searchTerm}")]
         Task<List<Book>> SearchBooksAsync(string searchTerm);
+
+        [Post("/api/Books")]
+        Task<Book> InsertBookAsync([Body] Book book);
+
+        [Put("/api/Books/{id}")]
+        Task UpdateBookAsync(int id, [Body] Book book);
+
+        [Delete("/api/Books/{id}")]
+        Task DeleteBookAsync(int id);
     }
 }
