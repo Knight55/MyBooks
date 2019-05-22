@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBooks.Client.Uwp", "MyBoo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBooks.Dto", "MyBooks.Dto\MyBooks.Dto.csproj", "{8B0132CA-7573-451A-B1FA-5EE4E604042E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBooks.IdentityServer", "MyBooks.IdentityServer\MyBooks.IdentityServer.csproj", "{86E1CFEA-CC02-409B-8BB8-4A05F78B690C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBooks.IdentityServer", "MyBooks.IdentityServer\MyBooks.IdentityServer.csproj", "{86E1CFEA-CC02-409B-8BB8-4A05F78B690C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,8 +90,6 @@ Global
 		{5224AA7C-77C0-46D2-99C4-2D5EECA3D5A5}.Release|x86.ActiveCfg = Release|Any CPU
 		{5224AA7C-77C0-46D2-99C4-2D5EECA3D5A5}.Release|x86.Build.0 = Release|Any CPU
 		{B82E4641-136D-4D6A-80A7-26B1C475E15D}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{B82E4641-136D-4D6A-80A7-26B1C475E15D}.Debug|Any CPU.Build.0 = Debug|x86
-		{B82E4641-136D-4D6A-80A7-26B1C475E15D}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{B82E4641-136D-4D6A-80A7-26B1C475E15D}.Debug|ARM.ActiveCfg = Debug|ARM
 		{B82E4641-136D-4D6A-80A7-26B1C475E15D}.Debug|ARM.Build.0 = Debug|ARM
 		{B82E4641-136D-4D6A-80A7-26B1C475E15D}.Debug|ARM.Deploy.0 = Debug|ARM

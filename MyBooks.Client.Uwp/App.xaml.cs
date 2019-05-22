@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -7,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Security.Authentication.Web;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -72,6 +74,25 @@ namespace MyBooks.Client.Uwp
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the application is launched through a custom URI scheme, such as
+        /// is the case in an OAuth 2.0 authorization flow.
+        /// </summary>
+        /// <param name="args">Details about the URI that activated the app.</param>
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            // When the app was activated by a Protocol (custom URI scheme), forwards
+            // the URI to the SystemBrowser through a static method.
+            if (args.Kind == ActivationKind.Protocol)
+            {
+                // Extracts the authorization response URI from the arguments.
+                var protocolArgs = (ProtocolActivatedEventArgs)args;
+                var uri = protocolArgs.Uri;
+                Debug.WriteLine("Authorization Response: " + uri.AbsoluteUri);
+                SystemBrowser.ProcessResponse(uri);
             }
         }
 
