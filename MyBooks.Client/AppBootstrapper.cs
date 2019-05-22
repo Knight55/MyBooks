@@ -28,8 +28,12 @@ namespace MyBooks.Client
                 Locator.Current.GetService<IMyBookApiService>()
             ), typeof(BookSearchViewModel));
             Locator.CurrentMutable.Register(() => new BookDetailsViewModel(
-                Locator.Current.GetService<IScreen>()
+                Locator.Current.GetService<IScreen>(),
+                Locator.Current.GetService<IMyBookApiService>()
             ), typeof(BookDetailsViewModel));
+            Locator.CurrentMutable.Register(() => new NewBookViewModel(
+                Locator.Current.GetService<IMyBookApiService>()
+                ), typeof(NewBookViewModel));
 
             // Views
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetEntryAssembly());
