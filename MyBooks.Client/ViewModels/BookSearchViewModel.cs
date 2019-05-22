@@ -32,7 +32,7 @@ namespace MyBooks.Client.ViewModels
         public bool IsAvailable => _isAvailable.Value;
 
         public ReactiveCommand<Book, Unit> GoToBookDetails { get; }
-        public ReactiveCommand<Book, Unit> DeleteBookCommand { get; }
+        public ReactiveCommand<int, Unit> DeleteBookCommand { get; }
 
         public BookSearchViewModel(IScreen hostScreen, IMyBookApiService myBookApiService)
         {
@@ -45,15 +45,7 @@ namespace MyBooks.Client.ViewModels
                 bookDetailsViewModel.Book = b;
                 HostScreen.Router.Navigate.Execute(bookDetailsViewModel).Subscribe();
             });
-            DeleteBookCommand = ReactiveCommand.CreateFromTask<Book>(async b =>
-            {
-                await GetBooks("", CancellationToken.None);
-                if (b != null)
-                {
-                    await DeleteBookAsync(b.Id);
-                    await GetBooks("", CancellationToken.None);
-                }
-            });
+            DeleteBookCommand = ReactiveCommand.Create<int>(DeleteBook);
 
             _results = this
                 .WhenAnyValue(x => x.SearchTerm)
@@ -98,9 +90,9 @@ namespace MyBooks.Client.ViewModels
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        private async Task DeleteBookAsync(int id)
+        private void DeleteBook(int id)
         {
-            await _myBookApiService.DeleteBookAsync(id);
+            _myBookApiService.DeleteBookAsync(id);
         }
     }
 }
