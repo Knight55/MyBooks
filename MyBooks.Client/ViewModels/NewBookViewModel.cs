@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MyBooks.Client.Services;
 using MyBooks.Dto.Dtos;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace MyBooks.Client.ViewModels
 {
@@ -12,9 +11,26 @@ namespace MyBooks.Client.ViewModels
     {
         private readonly IMyBookApiService _myBookApiService;
 
-        [Reactive] public string Title { get; set; }
-        [Reactive] public string Genre { get; set; }
-        [Reactive] public string Summary { get; set; }
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set => this.RaiseAndSetIfChanged(ref _title, value);
+        }
+
+        private string _genre;
+        public string Genre
+        {
+            get => _genre;
+            set => this.RaiseAndSetIfChanged(ref _genre, value);
+        }
+
+        private string _summary;
+        public string Summary
+        {
+            get => _summary;
+            set => this.RaiseAndSetIfChanged(ref _summary, value);
+        }
 
         public ReactiveCommand<Unit, Book> AddNewBookCommand { get; set; }
 
