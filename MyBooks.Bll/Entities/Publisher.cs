@@ -9,6 +9,6 @@ namespace MyBooks.Bll.Entities
 
         public string Name { get; set; }
 
-        public ICollection<Edition> Editions { get; set; }
+        public ICollection<Edition> Editions { get; set; } = new List<Edition>();
     }
 }

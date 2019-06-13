@@ -17,12 +17,12 @@ namespace MyBooks.Bll.Entities
 
         public string Genre { get; set; }
 
-        public ICollection<BookAuthor> BookAuthors { get; set; }
+        public ICollection<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
 
-        public ICollection<Edition> Editions { get; set; }
+        public ICollection<Edition> Editions { get; set; } = new List<Edition>();
 
-        public ICollection<Rating> Ratings { get; set; }
+        public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 
-        public ICollection<BookOwnership> BookOwnerships { get; set; }
+        public ICollection<BookOwnership> BookOwnerships { get; set; } = new List<BookOwnership>();
     }
 }
