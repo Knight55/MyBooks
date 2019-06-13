@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyBooks.Dto.Dtos
 {
@@ -22,6 +23,6 @@ namespace MyBooks.Dto.Dtos
 
         public string GoodreadsUrl { get; set; }
 
-        //public List<Author> Authors { get; set; }
+        public List<int> AuthorIds { get; set; }
     }
 }
