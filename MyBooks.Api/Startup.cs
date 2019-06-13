@@ -83,8 +83,13 @@ namespace MyBooks.Api
             // DBContext
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+                //options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                options.UseNpgsql(Configuration.GetConnectionString("NpgSqlServerConnection"));
+            }); 
+
+            // Health checks
+            services.AddHealthChecks()
+                .AddDbContextCheck<ApplicationDbContext>();
 
             // Mvc
             services.AddMvc(o => o.MaxModelValidationErrors = 50)
@@ -119,7 +124,8 @@ namespace MyBooks.Api
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <param name="context"></param>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context)
         {
             //if (env.IsDevelopment())
             //{
@@ -136,6 +142,8 @@ namespace MyBooks.Api
 
             app.UseStaticFiles();
 
+            app.UseHealthChecks("/health");
+
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBooks API v1"));
 
@@ -148,6 +156,8 @@ namespace MyBooks.Api
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //context.Seed();
         }
     }
 }
