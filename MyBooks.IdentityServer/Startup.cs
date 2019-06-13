@@ -31,7 +31,7 @@ namespace MyBooks.IdentityServer
             // DBContext
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(Configuration.GetConnectionString("NpgSqlServerConnection"));
             });
 
             // Identity
@@ -51,16 +51,16 @@ namespace MyBooks.IdentityServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
-                //.AddConfigurationStore(options =>
-                //{
-                //    options.ConfigureDbContext = b =>
-                //        b.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                //})
-                //.AddOperationalStore(options =>
-                //{
-                //    options.ConfigureDbContext = b =>
-                //        b.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                //})
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b =>
+                        b.UseNpgsql(Configuration.GetConnectionString("NpgSqlServerConnection"));
+                })
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b =>
+                        b.UseNpgsql(Configuration.GetConnectionString("NpgSqlServerConnection"));
+                })
                 .AddAspNetIdentity<ApplicationUser>();
 
             if (Environment.IsDevelopment())
