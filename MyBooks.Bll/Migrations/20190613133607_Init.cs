@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyBooks.Bll.Migrations
 {
@@ -8,12 +8,16 @@ namespace MyBooks.Bll.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateSequence(
+                name: "EntityFrameworkHiLoSequence",
+                incrementBy: 10);
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -28,7 +32,7 @@ namespace MyBooks.Bll.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -50,25 +54,26 @@ namespace MyBooks.Bll.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AUTHOR",
+                name: "Authors",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     Name = table.Column<string>(nullable: true),
                     DateOfBirth = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AUTHOR", x => x.Id);
+                    table.PrimaryKey("PK_Authors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "BOOK",
+                name: "Books",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
+                    GoodreadsId = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
                     CoverImagePath = table.Column<string>(nullable: true),
                     Summary = table.Column<string>(nullable: true),
@@ -76,20 +81,20 @@ namespace MyBooks.Bll.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BOOK", x => x.Id);
+                    table.PrimaryKey("PK_Books", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PUBLISHER",
+                name: "Publishers",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PUBLISHER", x => x.Id);
+                    table.PrimaryKey("PK_Publishers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,7 +102,7 @@ namespace MyBooks.Bll.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     RoleId = table.Column<long>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -118,7 +123,7 @@ namespace MyBooks.Bll.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     UserId = table.Column<long>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -199,52 +204,52 @@ namespace MyBooks.Bll.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BOOKAUTHOR",
+                name: "BookAuthors",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     BookId = table.Column<int>(nullable: false),
                     AuthorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BOOKAUTHOR", x => x.Id);
+                    table.PrimaryKey("PK_BookAuthors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BOOKAUTHOR_AUTHOR_AuthorId",
+                        name: "FK_BookAuthors_Authors_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "AUTHOR",
+                        principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BOOKAUTHOR_BOOK_BookId",
+                        name: "FK_BookAuthors_Books_BookId",
                         column: x => x.BookId,
-                        principalTable: "BOOK",
+                        principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "BOOKOWNERSHIP",
+                name: "BookOwnership",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     BookId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     UserId1 = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BOOKOWNERSHIP", x => x.Id);
+                    table.PrimaryKey("PK_BookOwnership", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BOOKOWNERSHIP_BOOK_BookId",
+                        name: "FK_BookOwnership_Books_BookId",
                         column: x => x.BookId,
-                        principalTable: "BOOK",
+                        principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BOOKOWNERSHIP_AspNetUsers_UserId1",
+                        name: "FK_BookOwnership_AspNetUsers_UserId1",
                         column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -252,11 +257,11 @@ namespace MyBooks.Bll.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RATING",
+                name: "Ratings",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     Value = table.Column<int>(nullable: false),
                     Text = table.Column<string>(nullable: true),
                     BookId = table.Column<int>(nullable: false),
@@ -265,15 +270,15 @@ namespace MyBooks.Bll.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RATING", x => x.Id);
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RATING_BOOK_BookId",
+                        name: "FK_Ratings_Books_BookId",
                         column: x => x.BookId,
-                        principalTable: "BOOK",
+                        principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RATING_AspNetUsers_UserId1",
+                        name: "FK_Ratings_AspNetUsers_UserId1",
                         column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -281,11 +286,11 @@ namespace MyBooks.Bll.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EDITION",
+                name: "Editions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     IsbnNumber = table.Column<string>(nullable: true),
                     DateOfPublish = table.Column<DateTime>(nullable: false),
                     NumberOfPages = table.Column<int>(nullable: false),
@@ -295,27 +300,27 @@ namespace MyBooks.Bll.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EDITION", x => x.Id);
+                    table.PrimaryKey("PK_Editions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EDITION_BOOK_BookId",
+                        name: "FK_Editions_Books_BookId",
                         column: x => x.BookId,
-                        principalTable: "BOOK",
+                        principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EDITION_PUBLISHER_PublisherId",
+                        name: "FK_Editions_Publishers_PublisherId",
                         column: x => x.PublisherId,
-                        principalTable: "PUBLISHER",
+                        principalTable: "Publishers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "READINGSTATUS",
+                name: "ReadingStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo),
                     EditionId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     UserId1 = table.Column<long>(nullable: true),
@@ -323,15 +328,15 @@ namespace MyBooks.Bll.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_READINGSTATUS", x => x.Id);
+                    table.PrimaryKey("PK_ReadingStatuses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_READINGSTATUS_EDITION_EditionId",
+                        name: "FK_ReadingStatuses_Editions_EditionId",
                         column: x => x.EditionId,
-                        principalTable: "EDITION",
+                        principalTable: "Editions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_READINGSTATUS_AspNetUsers_UserId1",
+                        name: "FK_ReadingStatuses_AspNetUsers_UserId1",
                         column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -347,8 +352,7 @@ namespace MyBooks.Bll.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -374,57 +378,56 @@ namespace MyBooks.Bll.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_BOOKAUTHOR_AuthorId",
-                table: "BOOKAUTHOR",
+                name: "IX_BookAuthors_AuthorId",
+                table: "BookAuthors",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BOOKAUTHOR_BookId",
-                table: "BOOKAUTHOR",
+                name: "IX_BookAuthors_BookId",
+                table: "BookAuthors",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BOOKOWNERSHIP_BookId",
-                table: "BOOKOWNERSHIP",
+                name: "IX_BookOwnership_BookId",
+                table: "BookOwnership",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BOOKOWNERSHIP_UserId1",
-                table: "BOOKOWNERSHIP",
+                name: "IX_BookOwnership_UserId1",
+                table: "BookOwnership",
                 column: "UserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EDITION_BookId",
-                table: "EDITION",
+                name: "IX_Editions_BookId",
+                table: "Editions",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EDITION_PublisherId",
-                table: "EDITION",
+                name: "IX_Editions_PublisherId",
+                table: "Editions",
                 column: "PublisherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RATING_BookId",
-                table: "RATING",
+                name: "IX_Ratings_BookId",
+                table: "Ratings",
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RATING_UserId1",
-                table: "RATING",
+                name: "IX_Ratings_UserId1",
+                table: "Ratings",
                 column: "UserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_READINGSTATUS_EditionId",
-                table: "READINGSTATUS",
+                name: "IX_ReadingStatuses_EditionId",
+                table: "ReadingStatuses",
                 column: "EditionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_READINGSTATUS_UserId1",
-                table: "READINGSTATUS",
+                name: "IX_ReadingStatuses_UserId1",
+                table: "ReadingStatuses",
                 column: "UserId1");
         }
 
@@ -446,34 +449,37 @@ namespace MyBooks.Bll.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BOOKAUTHOR");
+                name: "BookAuthors");
 
             migrationBuilder.DropTable(
-                name: "BOOKOWNERSHIP");
+                name: "BookOwnership");
 
             migrationBuilder.DropTable(
-                name: "RATING");
+                name: "Ratings");
 
             migrationBuilder.DropTable(
-                name: "READINGSTATUS");
+                name: "ReadingStatuses");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AUTHOR");
+                name: "Authors");
 
             migrationBuilder.DropTable(
-                name: "EDITION");
+                name: "Editions");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "BOOK");
+                name: "Books");
 
             migrationBuilder.DropTable(
-                name: "PUBLISHER");
+                name: "Publishers");
+
+            migrationBuilder.DropSequence(
+                name: "EntityFrameworkHiLoSequence");
         }
     }
 }

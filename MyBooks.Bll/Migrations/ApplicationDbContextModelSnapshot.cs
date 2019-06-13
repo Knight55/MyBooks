@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBooks.Bll.Context;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyBooks.Bll.Migrations
 {
@@ -15,15 +15,16 @@ namespace MyBooks.Bll.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:HiLoSequenceName", "EntityFrameworkHiLoSequence")
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo)
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
+                .HasAnnotation("Relational:Sequence:.EntityFrameworkHiLoSequence", "'EntityFrameworkHiLoSequence', '', '1', '10', '', '', 'Int64', 'False'");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
 
@@ -41,8 +42,7 @@ namespace MyBooks.Bll.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<long>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
 
@@ -105,8 +105,7 @@ namespace MyBooks.Bll.Migrations
             modelBuilder.Entity("MyBooks.Bll.Entities.ApplicationRole", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -121,8 +120,7 @@ namespace MyBooks.Bll.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -130,8 +128,7 @@ namespace MyBooks.Bll.Migrations
             modelBuilder.Entity("MyBooks.Bll.Entities.ApplicationUser", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
 
@@ -173,8 +170,7 @@ namespace MyBooks.Bll.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -182,8 +178,7 @@ namespace MyBooks.Bll.Migrations
             modelBuilder.Entity("MyBooks.Bll.Entities.Author", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("DateOfBirth");
 
@@ -192,39 +187,12 @@ namespace MyBooks.Bll.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateOfBirth = new DateTime(1975, 12, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Brandon Sanderson"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateOfBirth = new DateTime(1977, 3, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Brent Weeks"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DateOfBirth = new DateTime(1948, 10, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Robert Jordan"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DateOfBirth = new DateTime(1988, 1, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Pierce Brown"
-                        });
                 });
 
             modelBuilder.Entity("MyBooks.Bll.Entities.Book", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("CoverImagePath");
 
@@ -239,55 +207,12 @@ namespace MyBooks.Bll.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Books");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CoverImagePath = "thewayofkings.jpg",
-                            Genre = "Fantasy",
-                            GoodreadsId = "7235533-the-way-of-kings",
-                            Title = "The Way of Kings"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CoverImagePath = "blackprism.jpg",
-                            Genre = "Fantasy",
-                            GoodreadsId = "7165300-the-black-prism",
-                            Title = "The Black Prism"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CoverImagePath = "theeyeoftheworld.jpg",
-                            Genre = "Fantasy",
-                            GoodreadsId = "228665.The_Eye_of_the_World",
-                            Title = "The Eye of the World"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CoverImagePath = "redrising.jpg",
-                            Genre = "Scifi",
-                            GoodreadsId = "15839976-red-rising",
-                            Title = "Red Rising"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CoverImagePath = "brokeneye.jpg",
-                            Genre = "Fantasy",
-                            GoodreadsId = "12652457-the-broken-eye",
-                            Title = "The Broken Eye"
-                        });
                 });
 
             modelBuilder.Entity("MyBooks.Bll.Entities.BookAuthor", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AuthorId");
 
@@ -300,45 +225,12 @@ namespace MyBooks.Bll.Migrations
                     b.HasIndex("BookId");
 
                     b.ToTable("BookAuthor");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AuthorId = 1,
-                            BookId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AuthorId = 2,
-                            BookId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AuthorId = 3,
-                            BookId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AuthorId = 4,
-                            BookId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AuthorId = 2,
-                            BookId = 5
-                        });
                 });
 
             modelBuilder.Entity("MyBooks.Bll.Entities.BookOwnership", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("BookId");
 
@@ -358,8 +250,7 @@ namespace MyBooks.Bll.Migrations
             modelBuilder.Entity("MyBooks.Bll.Entities.Edition", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("BookId");
 
@@ -383,60 +274,24 @@ namespace MyBooks.Bll.Migrations
                     b.HasIndex("PublisherId");
 
                     b.ToTable("Editions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BookId = 1,
-                            DateOfPublish = new DateTime(2010, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Format = "Hardcover",
-                            IsbnNumber = "0765326353",
-                            NumberOfPages = 1007,
-                            PublisherId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BookId = 1,
-                            DateOfPublish = new DateTime(2011, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Format = "Paperback",
-                            IsbnNumber = "0765365278",
-                            NumberOfPages = 1258,
-                            PublisherId = 2
-                        });
                 });
 
             modelBuilder.Entity("MyBooks.Bll.Entities.Publisher", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
 
                     b.ToTable("Publishers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Tor Books"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Tom Doherty"
-                        });
                 });
 
             modelBuilder.Entity("MyBooks.Bll.Entities.Rating", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("BookId");
 
@@ -460,8 +315,7 @@ namespace MyBooks.Bll.Migrations
             modelBuilder.Entity("MyBooks.Bll.Entities.ReadingStatus", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("EditionId");
 
