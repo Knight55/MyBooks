@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Reactive.Disposables;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Forms;
+using IdentityModel.OidcClient;
 using MyBooks.Client.ViewModels;
 using MyBooks.Client.Wpf.Views;
 using ReactiveUI;
 using Splat;
+using Application = System.Windows.Application;
 
 namespace MyBooks.Client.Wpf
 {
@@ -25,6 +17,8 @@ namespace MyBooks.Client.Wpf
     /// </summary>
     public partial class MainWindow : ReactiveWindow<AppViewModel>
     {
+        private OidcClient _oidcClient = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -56,6 +50,55 @@ namespace MyBooks.Client.Wpf
         {
             var newBookWindow = new NewBookWindow();
             newBookWindow.Show();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private async void OnLogin(object sender, RoutedEventArgs args)
+        {
+            var options = new OidcClientOptions()
+            {
+                Authority = /*"https://demo.identityserver.io/",*/ "http://localhost:5001/",
+                ClientId = "native.code",
+                Scope = "openid profile email",
+                RedirectUri = "https://notused",
+                ResponseMode = OidcClientOptions.AuthorizeResponseMode.FormPost,
+                Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
+                Browser = new WpfEmbeddedBrowser()
+            };
+
+            _oidcClient = new OidcClient(options);
+
+            LoginResult result;
+            try
+            {
+                result = await _oidcClient.LoginAsync();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Unexpected Error: {ex.Message}");
+                return;
+            }
+
+            if (result.IsError)
+            {
+                if (result.Error == "UserCancel")
+                {
+                    Debug.WriteLine("The sign-in window was closed before authorization was completed.");
+                }
+                else
+                {
+                    Debug.WriteLine($"Error: {result.Error}");
+                }
+            }
+            else
+            {
+                var name = result.User.Identity.Name;
+                Debug.WriteLine($"Hello {name}");
+            }
         }
     }
 }

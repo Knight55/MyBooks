@@ -15,6 +15,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="Exit" Click="OnExit" />
                 <MenuItem Header="Add new book" Click="OnAddNewBook" />
+                <MenuItem Header="Login" Click="OnLogin" />
             </MenuItem>
         </Menu>
         <rxui:RoutedViewHost
