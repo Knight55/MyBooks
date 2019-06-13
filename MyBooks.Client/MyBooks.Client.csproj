@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="3.10.10" />
-    <PackageReference Include="ReactiveUI" Version="9.16.1" />
-    <PackageReference Include="Refit" Version="4.6.107" />
+    <PackageReference Include="ReactiveUI" Version="9.16.9" />
+    <PackageReference Include="Refit" Version="4.7.9" />
   </ItemGroup>
 
   <ItemGroup>
