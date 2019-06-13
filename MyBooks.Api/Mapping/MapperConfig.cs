@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using MyBooks.Bll.Entities;
@@ -11,9 +12,13 @@ namespace MyBooks.Api.Mapping
         {
             var config = new MapperConfiguration(cfg =>
             {
-                //cfg.AllowNullCollections = true;
+                cfg.AllowNullCollections = true;
+
+                // Book
                 cfg.CreateMap<Book, Dto.Dtos.Book>()
-                    //.ForMember(dto => dto.Authors, opt => opt.Ignore())
+                    .ForMember(dto => dto.AuthorIds,
+                        opt => opt.MapFrom(src =>
+                            new List<int>(src.BookAuthors.Select(ba => ba.AuthorId))))
                     .ForMember(dto => dto.CoverUrl,
                         opt => opt.MapFrom(src =>
                             $@"http://localhost:5000/covers/{src.CoverImagePath}"))
@@ -28,7 +33,12 @@ namespace MyBooks.Api.Mapping
                         opt => opt.MapFrom(src =>
                             src.GoodreadsUrl == null ? "" : src.GoodreadsUrl.Substring(src.GoodreadsUrl.LastIndexOf(@"/", StringComparison.Ordinal) + 1)));
 
-                // TODO: CreateMap for other entities and dtos as well
+                // Author
+                cfg.CreateMap<Author, Dto.Dtos.Author>()
+                    .ForMember(dto => dto.BookIds,
+                        opt => opt.MapFrom(src =>
+                            new List<int>(src.BookAuthors.Select(ba => ba.BookId))));
+                cfg.CreateMap<Dto.Dtos.Author, Author>();
             });
 
             var mapper = config.CreateMapper();
