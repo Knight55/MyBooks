@@ -33,12 +33,16 @@ namespace MyBooks.IdentityServer
                 // Native clients
                 new Client
                 {
-                    ClientId = "native.hybrid",
+                    ClientId = "native.code", //"native.hybrid",
                     ClientName = "Native Client (Hybrid with PKCE)",
 
-                    RequireClientSecret = false,
+                    RedirectUris = { "https://notused" },
+                    PostLogoutRedirectUris = { "https://notused" },
 
-                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RequireClientSecret = false,
+                    RequireConsent = false,
+
+                    AllowedGrantTypes = GrantTypes.Code, //.Hybrid,
                     RequirePkce = true,
                     AllowedScopes = {"openid", "profile", "email", "myBooksApi"},
 
