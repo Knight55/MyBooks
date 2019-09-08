@@ -12,6 +12,7 @@ namespace MyBooks.Api.Controllers
     /// <summary>
     /// Public API controller for books.
     /// </summary>
+    [ApiVersion("1.0")]
     [Route("api/[controller]")]
     //[Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]

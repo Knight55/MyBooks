@@ -5,6 +5,7 @@ using Refit;
 
 namespace MyBooks.Client.Services
 {
+    [Headers("api-version: 1.0")]
     public interface IMyBookApiService
     {
         [Get("/api/Books/{id}")]

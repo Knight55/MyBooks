@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -70,6 +71,7 @@ namespace MyBooks.Api
                 o.DescribeAllEnumsAsStrings();
             });
 
+            // Problem details
             services.AddProblemDetails(options =>
             {
                 options.IncludeExceptionDetails = ctx => false;
@@ -95,6 +97,12 @@ namespace MyBooks.Api
             services.AddMvc(o => o.MaxModelValidationErrors = 50)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(json => json.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            // API versioning
+            services.AddApiVersioning(options =>
+            {
+                options.ApiVersionReader = new HeaderApiVersionReader("api-version");
+            });
 
             // Authentication
             services.AddAuthentication("Bearer")
