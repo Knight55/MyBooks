@@ -4,6 +4,29 @@
         <name>MyBooks.Api</name>
     </assembly>
     <members>
+        <member name="T:MyBooks.Api.Controllers.AccountController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MyBooks.Api.Controllers.AccountController.#ctor(Microsoft.AspNetCore.Identity.UserManager{MyBooks.Bll.Entities.ApplicationUser})">
+            <summary>
+            
+            </summary>
+            <param name="userManager"></param>
+        </member>
+        <member name="M:MyBooks.Api.Controllers.AccountController.Post(MyBooks.Dto.Dtos.UserToRegister)">
+            <summary>
+            
+            </summary>
+            <param name="userToRegister"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MyBooks.Api.Controllers.AuthorController">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:MyBooks.Api.Controllers.BooksController">
             <summary>
             Public API controller for books.
@@ -57,6 +80,35 @@
             
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MyBooks.Api.Mapping.MapperConfig">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MyBooks.Api.Mapping.MapperConfig.Configure">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MyBooks.Api.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MyBooks.Api.Program.Main(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:MyBooks.Api.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
             <returns></returns>
         </member>
         <member name="T:MyBooks.Api.Startup">

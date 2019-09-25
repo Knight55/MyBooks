@@ -11,17 +11,29 @@ using MyBooks.Dto.Dtos;
 
 namespace MyBooks.Api.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userManager"></param>
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userToRegister"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UserToRegister userToRegister)
         {

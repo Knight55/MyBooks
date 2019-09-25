@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MyBooks.Client.Wpf
 {
@@ -13,5 +7,11 @@ namespace MyBooks.Client.Wpf
     /// </summary>
     public partial class App : Application
     {
+        public static AppBootstrapper BootStrapper;
+
+        public App()
+        {
+            BootStrapper = new AppBootstrapper();
+        }
     }
 }

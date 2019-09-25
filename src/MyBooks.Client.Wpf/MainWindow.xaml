@@ -1,12 +1,27 @@
-﻿<Window x:Class="MyBooks.Client.Wpf.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyBooks.Client.Wpf"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+﻿<rxui:ReactiveWindow
+    x:Class="MyBooks.Client.Wpf.MainWindow"
+    x:TypeArguments="viewModels:AppViewModel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:viewModels="clr-namespace:MyBooks.Client.ViewModels;assembly=MyBooks.Client"
+    mc:Ignorable="d"
+    Title="MyBooks" MinHeight="720" MinWidth="1280">
 
-    </Grid>
-</Window>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Click="OnExit" />
+                <MenuItem Header="Add new book" Click="OnAddNewBook" />
+                <!--<MenuItem Header="Login" Click="OnLogin" />-->
+            </MenuItem>
+        </Menu>
+        <rxui:RoutedViewHost
+            x:Name="viewHost"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch">
+        </rxui:RoutedViewHost>
+    </DockPanel>
+</rxui:ReactiveWindow>

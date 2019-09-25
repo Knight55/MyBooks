@@ -1,4 +1,6 @@
-﻿using Hellang.Middleware.ProblemDetails;
+﻿using System;
+using System.IO;
+using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using MyBooks.Api.Mapping;
 using MyBooks.Bll.Context;
 using MyBooks.Bll.Exceptions;
@@ -50,21 +53,21 @@ namespace MyBooks.Api
             });
 
             // Swagger
-            //services.AddSwaggerGen(o =>
-            //{
-            //    o.SwaggerDoc("v1", new Info
-            //    {
-            //        Title = "MyBooks API",
-            //        Version = "v1",
-            //        Contact = new Contact
-            //        {
-            //            Email = "toth.dani9204@gmail.com",
-            //            Name = "Daniel Toth"
-            //        }
-            //    });
-            //    o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "MyBooks.Api.xml"));
-            //    o.DescribeAllEnumsAsStrings();
-            //});
+
+            services.AddSwaggerGen(o =>
+            {
+                o.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "MyBooks API",
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Email = "toth.dani9204@gmail.com",
+                        Name = "Daniel Toth"
+                    }
+                });
+                o.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "MyBooks.Api.xml"));
+            });
 
             // Problem details
             services.AddProblemDetails(options =>
@@ -80,8 +83,7 @@ namespace MyBooks.Api
             // DBContext
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
-                options.UseNpgsql(Configuration.GetConnectionString("NpgSqlServerConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
             }); 
 
             // Health checks

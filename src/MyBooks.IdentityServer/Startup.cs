@@ -31,7 +31,7 @@ namespace MyBooks.IdentityServer
             // DBContext
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(Configuration.GetConnectionString("NpgSqlServerConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
             });
 
             // Identity
@@ -54,12 +54,12 @@ namespace MyBooks.IdentityServer
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b =>
-                        b.UseNpgsql(Configuration.GetConnectionString("NpgSqlServerConnection"));
+                        b.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
                 })
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = b =>
-                        b.UseNpgsql(Configuration.GetConnectionString("NpgSqlServerConnection"));
+                        b.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
                 })
                 .AddAspNetIdentity<ApplicationUser>();
 

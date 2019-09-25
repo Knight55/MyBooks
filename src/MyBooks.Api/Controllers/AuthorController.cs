@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyBooks.Api.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthorController : ControllerBase

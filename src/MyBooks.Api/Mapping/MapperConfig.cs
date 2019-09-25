@@ -6,8 +6,15 @@ using MyBooks.Bll.Entities;
 
 namespace MyBooks.Api.Mapping
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MapperConfig
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static IMapper Configure()
         {
             var config = new MapperConfiguration(cfg =>

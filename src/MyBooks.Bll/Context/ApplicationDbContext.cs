@@ -14,15 +14,13 @@ namespace MyBooks.Bll.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder
-                .ConfigureWarnings(c => c.Throw(RelationalEventId.QueryClientEvaluationWarning));
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.ForNpgsqlUseSequenceHiLo();
+            builder.UseHiLo();
 
             builder.Entity<Edition>()
                 .Property(e => e.Format)
