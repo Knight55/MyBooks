@@ -1,14 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace MyBooks.Bll.Entities
+﻿namespace MyBooks.Dal.Entities
 {
-    public class Rating
+    public class BookOwnership
     {
         public int Id { get; set; }
-
-        public int Value { get; set; }
-
-        public string Text { get; set; }
 
         public int BookId { get; set; }
         public Book Book { get; set; }

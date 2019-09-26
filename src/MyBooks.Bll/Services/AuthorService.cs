@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using MyBooks.Bll.Context;
-using MyBooks.Bll.Entities;
+using MyBooks.Dal.Context;
+using MyBooks.Dal.Entities;
 
 namespace MyBooks.Bll.Services
 {

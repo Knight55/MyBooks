@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MyBooks.Api.Mapping;
-using MyBooks.Bll.Context;
+using MyBooks.Dal.Context;
 using MyBooks.Bll.Exceptions;
 using MyBooks.Bll.Services;
 using Newtonsoft.Json;

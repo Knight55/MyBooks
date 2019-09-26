@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using MyBooks.Bll.Context;
-using MyBooks.Bll.Entities;
+using MyBooks.Dal.Context;
+using MyBooks.Dal.Entities;
 using MyBooks.Bll.Exceptions;
 
 namespace MyBooks.Bll.Services

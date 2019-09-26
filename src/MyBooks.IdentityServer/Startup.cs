@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MyBooks.Bll.Context;
-using MyBooks.Bll.Entities;
+using MyBooks.Dal.Context;
+using MyBooks.Dal.Entities;
 
 namespace MyBooks.IdentityServer
 {

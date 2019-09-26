@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using MyBooks.Bll.Entities;
+using MyBooks.Dal.Entities;
 
 namespace IdentityServer4.Quickstart.UI
 {

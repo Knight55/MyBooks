@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyBooks.Bll.Entities
+namespace MyBooks.Dal.Entities
 {
     public class Edition
     {

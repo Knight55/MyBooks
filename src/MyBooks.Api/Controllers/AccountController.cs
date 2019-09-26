@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MyBooks.Bll.Entities;
+using MyBooks.Dal.Entities;
 using MyBooks.Dto.Dtos;
 
 namespace MyBooks.Api.Controllers

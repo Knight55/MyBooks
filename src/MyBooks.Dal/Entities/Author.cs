@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyBooks.Bll.Entities
+namespace MyBooks.Dal.Entities
 {
     public class Author
     {

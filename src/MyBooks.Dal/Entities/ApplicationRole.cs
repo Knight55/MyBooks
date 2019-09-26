@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace MyBooks.Bll.Entities
+namespace MyBooks.Dal.Entities
 {
     public class ApplicationRole : IdentityRole<long>
     {

@@ -14,7 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using MyBooks.Bll.Entities;
+using MyBooks.Dal.Entities;
 
 namespace Host.Quickstart.Account
 {

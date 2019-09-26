@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using MyBooks.Bll.Entities;
+using MyBooks.Dal.Entities;
 
-namespace MyBooks.Bll.Context
+namespace MyBooks.Dal.Context
 {
     public static class SeedDatabase
     {

@@ -1,4 +1,4 @@
-﻿namespace MyBooks.Bll.Entities
+﻿namespace MyBooks.Dal.Entities
 {
     public enum Format
     {

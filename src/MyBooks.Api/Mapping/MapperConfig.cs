@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using MyBooks.Bll.Entities;
+using MyBooks.Dal.Entities;
 
 namespace MyBooks.Api.Mapping
 {

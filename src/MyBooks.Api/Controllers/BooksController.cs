@@ -77,7 +77,7 @@ namespace MyBooks.Api.Controllers
         [ProducesResponseType(typeof(Dictionary<string, string[]>), (int)HttpStatusCode.BadRequest)]
         public IActionResult Post([FromBody] Book book)
         {
-            var created = _bookService.InsertBook(_mapper.Map<Bll.Entities.Book>(book));
+            var created = _bookService.InsertBook(_mapper.Map<Dal.Entities.Book>(book));
             return CreatedAtAction(nameof(Get), new { created.Id }, _mapper.Map<Book>(created));
         }
 
@@ -90,7 +90,7 @@ namespace MyBooks.Api.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Book book)
         {
-            _bookService.UpdateBook(id, _mapper.Map<Bll.Entities.Book>(book));
+            _bookService.UpdateBook(id, _mapper.Map<Dal.Entities.Book>(book));
             return NoContent();
         }
 
