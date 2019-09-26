@@ -53,7 +53,6 @@ namespace MyBooks.Api
             });
 
             // Swagger
-
             services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("v1", new OpenApiInfo
@@ -90,8 +89,8 @@ namespace MyBooks.Api
             services.AddHealthChecks()
                 .AddDbContextCheck<ApplicationDbContext>();
 
-            // Mvc
-            services.AddMvc(o => o.MaxModelValidationErrors = 50)
+            // Mvc, only need controllers
+            services.AddControllers(o => o.MaxModelValidationErrors = 50)
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -104,26 +103,27 @@ namespace MyBooks.Api
             });
 
             // Authentication
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options =>
-                {
-                    options.Authority = "http://localhost:5001";
-                    options.RequireHttpsMetadata = false;
-                    options.ApiName = "myBooksApi";
-                    options.ApiSecret = "secret";
-                });
+            //services.AddAuthentication("Bearer")
+            //    .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options =>
+            //    {
+            //        options.Authority = "http://localhost:5001";
+            //        options.RequireHttpsMetadata = false;
+            //        options.ApiName = "myBooksApi";
+            //        options.ApiSecret = "secret";
+            //    });
 
             // Authorization
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(
-                    "AdminOnly",
-                    policy => policy.RequireClaim("Level", "Admin"));
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy(
+            //        "AdminOnly",
+            //        policy => policy.RequireClaim("Level", "Admin"));
+            //});
 
             // Services
             services.AddSingleton(MapperConfig.Configure());
             services.AddTransient<IBookService, BookService>();
+            services.AddTransient<IAuthorService, AuthorService>();
         }
 
         /// <summary>
@@ -154,16 +154,15 @@ namespace MyBooks.Api
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBooks API v1"));
 
-            app.UseAuthentication();
-
             app.UseProblemDetails();
             app.UseRouting();
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
+
+            //app.UseAuthentication();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
 
             //context.Seed();
         }
