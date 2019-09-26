@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -55,26 +56,31 @@ namespace MyBooks.Client.Infrastructure
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    services.UseMicrosoftDependencyResolver();
-                    var resolver = Locator.CurrentMutable;
-                    resolver.InitializeSplat();
-                    resolver.InitializeReactiveUI();
-                    resolver.UseSerilogFullLogger(Log.Logger);
-
+                    // Shutdown timeout in seconds
                     var timeout = context.Configuration.GetSection("shutdownTimeoutSeconds").Value;
                     services.AddOptions<HostOptions>().Configure(options =>
                     {
                         options.ShutdownTimeout = TimeSpan.FromSeconds(int.Parse(timeout));
                     });
 
+                    // REST service for MyBooks API
                     var apiUrl = context.Configuration.GetSection("apiUrl").Value;
-                    services.AddTransient(serviceProvider => RestService.For<IMyBookApiService>(apiUrl));
+                    services.AddTransient(provider => RestService.For<IMyBookApiService>(apiUrl));
 
-                    services.AddSingleton<IScreen, AppBootstrapper>();
-                    services.AddSingleton<AppViewModel>();
+                    // View models
+                    services.AddSingleton<IScreen, MainViewModel>();
+                    services.AddSingleton(provider => (MainViewModel) provider.GetService<IScreen>());
                     services.AddTransient<BookSearchViewModel>();
                     services.AddTransient<BookDetailsViewModel>();
                     services.AddTransient<NewBookViewModel>();
+
+                    // Splat and ReactiveUI
+                    services.UseMicrosoftDependencyResolver();
+                    var resolver = Locator.CurrentMutable;
+                    resolver.InitializeSplat();
+                    resolver.InitializeReactiveUI();
+                    resolver.RegisterViewsForViewModels(Assembly.GetEntryAssembly());
+                    resolver.UseSerilogFullLogger(Log.Logger);
                 });
 
             return hostBuilder;
