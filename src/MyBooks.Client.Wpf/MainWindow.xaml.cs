@@ -10,19 +10,21 @@ namespace MyBooks.Client.Wpf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : ReactiveWindow<AppViewModel>
+    public partial class MainWindow : ReactiveWindow<MainViewModel>
     {
         //private OidcClient _oidcClient = null;
 
         public MainWindow()
         {
             InitializeComponent();
-            ViewModel = Locator.Current.GetService<AppViewModel>();
+            ViewModel = Locator.Current.GetService<MainViewModel>();
 
             this.WhenActivated(disposableRegistration =>
             {
-                this.Bind(ViewModel, vm => vm.HostScreen.Router, v => v.viewHost.Router)
+                this.Bind(ViewModel, vm => vm.Router, v => v.viewHost.Router)
                     .DisposeWith(disposableRegistration);
+
+                viewHost.Router.Navigate.Execute(Locator.Current.GetService<BookSearchViewModel>());
             });
         }
 
