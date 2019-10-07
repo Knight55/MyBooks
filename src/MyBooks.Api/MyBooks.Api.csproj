@@ -11,8 +11,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="HangFire" Version="1.7.6" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="3.1.0" />
-    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.0" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.0.0-preview8.19405.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>

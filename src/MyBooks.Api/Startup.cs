@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Hangfire;
+using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
@@ -120,6 +122,28 @@ namespace MyBooks.Api
             //        policy => policy.RequireClaim("Level", "Admin"));
             //});
 
+            // Hangfire
+            services.AddHangfire(config =>
+            {
+                config
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseSqlServerStorage(
+                        Configuration.GetConnectionString("HangfireConnection"),
+                        new SqlServerStorageOptions
+                        {
+                            CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                            SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                            QueuePollInterval = TimeSpan.Zero,
+                            UseRecommendedIsolationLevel = true,
+                            UsePageLocksOnDequeue = true,
+                            DisableGlobalLocks = true
+                        });
+            });
+
+            services.AddHangfireServer();
+
             // Services
             services.AddSingleton(MapperConfig.Configure());
             services.AddTransient<IBookService, BookService>();
@@ -153,6 +177,11 @@ namespace MyBooks.Api
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBooks API v1"));
+
+            app.UseHangfireDashboard();
+            RecurringJob.AddOrUpdate(
+                () => Console.WriteLine($"Recurring job executed at {DateTime.Now}"),
+                Cron.Minutely);
 
             app.UseProblemDetails();
             app.UseRouting();

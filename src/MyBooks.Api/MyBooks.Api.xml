@@ -9,7 +9,7 @@
             
             </summary>
         </member>
-        <member name="M:MyBooks.Api.Controllers.AccountController.#ctor(Microsoft.AspNetCore.Identity.UserManager{MyBooks.Bll.Entities.ApplicationUser})">
+        <member name="M:MyBooks.Api.Controllers.AccountController.#ctor(Microsoft.AspNetCore.Identity.UserManager{MyBooks.Dal.Entities.ApplicationUser})">
             <summary>
             
             </summary>
@@ -133,7 +133,7 @@
             </summary>
             <param name="services"></param>
         </member>
-        <member name="M:MyBooks.Api.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,MyBooks.Bll.Context.ApplicationDbContext)">
+        <member name="M:MyBooks.Api.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,MyBooks.Dal.Context.ApplicationDbContext)">
             <summary>
             This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
             </summary>
