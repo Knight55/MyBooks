@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MyBooks.Api.Mapping;
+using MyBooks.Api.Services;
 using MyBooks.Dal.Context;
 using MyBooks.Bll.Exceptions;
 using MyBooks.Bll.Services;
@@ -145,6 +146,11 @@ namespace MyBooks.Api
             services.AddHangfireServer();
 
             // Services
+            services.AddHttpClient<GoodreadsService>(c =>
+            {
+                c.BaseAddress = new Uri("");
+            });
+
             services.AddSingleton(MapperConfig.Configure());
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<IAuthorService, AuthorService>();
