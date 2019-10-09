@@ -65,7 +65,11 @@ namespace MyBooks.Client.Infrastructure
 
                     // REST service for MyBooks API
                     var apiUrl = context.Configuration.GetSection("apiUrl").Value;
-                    services.AddTransient(provider => RestService.For<IMyBookApiService>(apiUrl));
+                    services.AddHttpClient("myBooksApi", c =>
+                    {
+                        c.BaseAddress = new Uri(apiUrl);
+                    })
+                    .AddTypedClient(c => RestService.For<IMyBooksApiClient>(c));
 
                     // View models
                     services.AddSingleton<IScreen, MainViewModel>();

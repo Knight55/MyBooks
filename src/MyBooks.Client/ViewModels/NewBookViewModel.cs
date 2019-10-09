@@ -9,7 +9,7 @@ namespace MyBooks.Client.ViewModels
 {
     public class NewBookViewModel : ReactiveObject
     {
-        private readonly IMyBookApiService _myBookApiService;
+        private readonly IMyBooksApiClient _myBooksApiClient;
 
         private string _title;
         public string Title
@@ -34,9 +34,9 @@ namespace MyBooks.Client.ViewModels
 
         public ReactiveCommand<Unit, Book> AddNewBookCommand { get; set; }
 
-        public NewBookViewModel(IMyBookApiService myBookApiService)
+        public NewBookViewModel(IMyBooksApiClient myBooksApiClient)
         {
-            _myBookApiService = myBookApiService;
+            _myBooksApiClient = myBooksApiClient;
 
             AddNewBookCommand = ReactiveCommand.Create(AddBook);
         }
@@ -49,7 +49,7 @@ namespace MyBooks.Client.ViewModels
                 Genre = Genre,
                 Summary = Summary
             };
-            var insertedBook = _myBookApiService.InsertBookAsync(bookToBeInserted);
+            var insertedBook = _myBooksApiClient.InsertBookAsync(bookToBeInserted);
             return insertedBook.Result;
         }
     }

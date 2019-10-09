@@ -16,7 +16,7 @@ namespace MyBooks.Client.ViewModels
     {
         public string UrlPathSegment => "bookSearch";
         public IScreen HostScreen { get; }
-        private readonly IMyBookApiService _myBookApiService;
+        private readonly IMyBooksApiClient _myBooksApiClient;
 
         private string _searchTerm = "";
         public string SearchTerm
@@ -34,10 +34,10 @@ namespace MyBooks.Client.ViewModels
         public ReactiveCommand<Book, Unit> GoToBookDetails { get; }
         public ReactiveCommand<int, Unit> DeleteBookCommand { get; }
 
-        public BookSearchViewModel(IScreen hostScreen, IMyBookApiService myBookApiService)
+        public BookSearchViewModel(IScreen hostScreen, IMyBooksApiClient myBooksApiClient)
         {
             HostScreen = hostScreen;
-            _myBookApiService = myBookApiService;
+            _myBooksApiClient = myBooksApiClient;
 
             GoToBookDetails = ReactiveCommand.Create<Book>(b =>
             {
@@ -76,11 +76,11 @@ namespace MyBooks.Client.ViewModels
             List<Book> books;
             if (string.IsNullOrEmpty(searchTerm))
             {
-                books = await _myBookApiService.GetBooksAsync().ConfigureAwait(false);
+                books = await _myBooksApiClient.GetBooksAsync().ConfigureAwait(false);
             }
             else
             {
-                books = await _myBookApiService.SearchBooksAsync(searchTerm).ConfigureAwait(false);
+                books = await _myBooksApiClient.SearchBooksAsync(searchTerm).ConfigureAwait(false);
             }
             return books;
         }
@@ -92,7 +92,7 @@ namespace MyBooks.Client.ViewModels
         /// <returns></returns>
         private void DeleteBook(int id)
         {
-            _myBookApiService.DeleteBookAsync(id);
+            _myBooksApiClient.DeleteBookAsync(id);
         }
     }
 }

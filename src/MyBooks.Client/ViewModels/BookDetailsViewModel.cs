@@ -11,7 +11,7 @@ namespace MyBooks.Client.ViewModels
     {
         public string UrlPathSegment => "bookDetails";
         public IScreen HostScreen { get; }
-        private readonly IMyBookApiService _myBookApiService;
+        private readonly IMyBooksApiClient _myBooksApiClient;
 
         public ReactiveCommand<Unit, Unit> GoBack { get; }
         public ReactiveCommand<Unit, Unit> OpenGoodreadsUrl { get; }
@@ -31,10 +31,10 @@ namespace MyBooks.Client.ViewModels
         //public string Authors => string.Join(", ", Book.Authors.Select(a => a.Name));
         public string Rating => Book.Rating > 0.0 ? $"{Math.Round(Book.Rating, 2)}" : "Not yet rated.";
 
-        public BookDetailsViewModel(IScreen hostScreen, IMyBookApiService myBookApiService)
+        public BookDetailsViewModel(IScreen hostScreen, IMyBooksApiClient myBooksApiClient)
         {
             HostScreen = hostScreen;
-            _myBookApiService = myBookApiService;
+            _myBooksApiClient = myBooksApiClient;
             GoBack = ReactiveCommand.Create(() => { HostScreen.Router.NavigateBack.Execute(); });
             OpenGoodreadsUrl = ReactiveCommand.Create(() => { Process.Start(Book.GoodreadsUrl); });
             UpdateBookCommand = ReactiveCommand.Create(UpdateBook);
@@ -42,7 +42,7 @@ namespace MyBooks.Client.ViewModels
 
         public void UpdateBook()
         {
-            _myBookApiService.UpdateBookAsync(Book.Id, Book);
+            _myBooksApiClient.UpdateBookAsync(Book.Id, Book);
         }
     }
 }
