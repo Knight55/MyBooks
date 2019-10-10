@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using AutoMapper;
-using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyBooks.Api.Services;
 using MyBooks.Bll.Services;
 using MyBooks.Dto.Dtos;
 
@@ -20,16 +21,19 @@ namespace MyBooks.Api.Controllers
     {
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
+        private readonly GoodreadsService _goodreadsService;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="bookService"></param>
         /// <param name="mapper"></param>
-        public BooksController(IBookService bookService, IMapper mapper)
+        /// <param name="goodreadsService"></param>
+        public BooksController(IBookService bookService, IMapper mapper, GoodreadsService goodreadsService)
         {
             _bookService = bookService;
             _mapper = mapper;
+            _goodreadsService = goodreadsService;
         }
 
         /// <summary>
@@ -62,9 +66,21 @@ namespace MyBooks.Api.Controllers
         /// <returns></returns>
         [HttpGet("Search/{searchTerm}")]
         [ProducesResponseType(typeof(List<Book>), (int)HttpStatusCode.OK)]
-        public IActionResult Search(string searchTerm)
-        {
-            return Ok(_mapper.Map<List<Book>>(_bookService.SearchBooks(searchTerm)));
+        public async Task<IActionResult> Search(string searchTerm)
+        { 
+            // Test
+            var response = await _goodreadsService.SearchBooks(searchTerm);
+            if (response != null)
+            {
+                var books = response.SearchItem.results
+                    .Select(work => new Book(work))
+                    .ToList();
+
+                return Ok(books);
+            }
+
+            return NotFound();
+            //return Ok(_mapper.Map<List<Book>>(_bookService.SearchBooks(searchTerm)));
         }
 
         /// <summary>

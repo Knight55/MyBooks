@@ -5,6 +5,11 @@ namespace MyBooks.Dto.Dtos
 {
     public class Book
     {
+        public Book()
+        {
+            
+        }
+
         public int Id { get; set; }
 
         /// <summary>
@@ -24,5 +29,12 @@ namespace MyBooks.Dto.Dtos
         public string GoodreadsUrl { get; set; }
 
         public List<int> AuthorIds { get; set; }
+
+        public Book(GoodreadsResponseSearchResultsWork work)
+        {
+            Title = work.best_book.title;
+            CoverUrl = work.best_book.image_url;
+            //Rating = double.Parse(work.average_rating.Value);
+        }
     }
 }

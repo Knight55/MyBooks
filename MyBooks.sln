@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBooks.IdentityServer", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBooks.Dal", "src\MyBooks.Dal\MyBooks.Dal.csproj", "{4DB34D2C-076F-4670-9E3D-A1851C371D75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBooks.Client.Wpf", "src\MyBooks.Client.Wpf\MyBooks.Client.Wpf.csproj", "{E977C74B-96A6-47C8-8D54-2F79620869E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBooks.Client.Wpf", "src\MyBooks.Client.Wpf\MyBooks.Client.Wpf.csproj", "{E977C74B-96A6-47C8-8D54-2F79620869E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

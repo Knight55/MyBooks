@@ -3,7 +3,6 @@ using System.IO;
 using Hangfire;
 using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
-using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MyBooks.Api.Mapping;
@@ -49,11 +49,11 @@ namespace MyBooks.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // Logging
-            services.AddLogging(loggingBuilder =>
-            {
-                loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
-                loggingBuilder.AddConsole();
-            });
+            //services.AddLogging(loggingBuilder =>
+            //{
+            //    loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
+            //    loggingBuilder.AddConsole();
+            //});
 
             // Swagger
             services.AddSwaggerGen(o =>
@@ -124,32 +124,35 @@ namespace MyBooks.Api
             //});
 
             // Hangfire
-            services.AddHangfire(config =>
-            {
-                config
-                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                    .UseSimpleAssemblyNameTypeSerializer()
-                    .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(
-                        Configuration.GetConnectionString("HangfireConnection"),
-                        new SqlServerStorageOptions
-                        {
-                            CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                            SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                            QueuePollInterval = TimeSpan.Zero,
-                            UseRecommendedIsolationLevel = true,
-                            UsePageLocksOnDequeue = true,
-                            DisableGlobalLocks = true
-                        });
-            });
+            //services.AddHangfire(config =>
+            //{
+            //    config
+            //        .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+            //        .UseSimpleAssemblyNameTypeSerializer()
+            //        .UseRecommendedSerializerSettings()
+            //        .UseSqlServerStorage(
+            //            Configuration.GetConnectionString("HangfireConnection"),
+            //            new SqlServerStorageOptions
+            //            {
+            //                CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+            //                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+            //                QueuePollInterval = TimeSpan.Zero,
+            //                UseRecommendedIsolationLevel = true,
+            //                UsePageLocksOnDequeue = true,
+            //                DisableGlobalLocks = true
+            //            });
+            //});
 
-            services.AddHangfireServer();
+            //services.AddHangfireServer();
 
             // Services
-            services.AddHttpClient<GoodreadsService>(c =>
+            services.AddOptions<GoodreadsOptions>().Configure(options =>
             {
-                c.BaseAddress = new Uri("");
+                options.BaseUrl = Configuration["Goodreads:baseUrl"];
+                options.Key = Configuration["Goodreads:key"];
+                options.Secret = Configuration["Goodreads:secret"];
             });
+            services.AddHttpClient<GoodreadsService>();
 
             services.AddSingleton(MapperConfig.Configure());
             services.AddTransient<IBookService, BookService>();
@@ -164,16 +167,16 @@ namespace MyBooks.Api
         /// <param name="context"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            //    //app.UseHsts();
-            //    app.UseExceptionHandler("/error");
-            //}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                //app.UseHsts();
+                app.UseExceptionHandler("/error");
+            }
 
             //app.UseHttpsRedirection();
 
@@ -184,10 +187,10 @@ namespace MyBooks.Api
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyBooks API v1"));
 
-            app.UseHangfireDashboard();
-            RecurringJob.AddOrUpdate(
-                () => Console.WriteLine($"Recurring job executed at {DateTime.Now}"),
-                Cron.Minutely);
+            //app.UseHangfireDashboard();
+            //RecurringJob.AddOrUpdate(
+            //    () => Console.WriteLine($"Recurring job executed at {DateTime.Now}"),
+            //    Cron.Minutely);
 
             app.UseProblemDetails();
             app.UseRouting();
@@ -199,7 +202,7 @@ namespace MyBooks.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //context.Seed();
+            context.Seed();
         }
     }
 }
