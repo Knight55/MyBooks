@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace MyBooks.Api
 {
@@ -29,6 +30,10 @@ namespace MyBooks.Api
                     webBuilder
                         .ConfigureKestrel(serverOptions => { })
                         .UseStartup<Startup>();
+                })
+                .UseSerilog((context, config) =>
+                {
+                    config.ReadFrom.Configuration(context.Configuration);
                 });
     }
 }
