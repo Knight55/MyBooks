@@ -49,7 +49,7 @@ namespace MyBooks.Client.ViewModels
 
             _results = this
                 .WhenAnyValue(x => x.SearchTerm)
-                .Throttle(TimeSpan.FromMilliseconds(700))
+                .Throttle(TimeSpan.FromMilliseconds(1000))
                 .Select(term => term?.Trim())
                 .DistinctUntilChanged()
                 .SelectMany(GetBooks)
