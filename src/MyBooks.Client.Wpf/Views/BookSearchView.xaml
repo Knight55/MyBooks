@@ -5,7 +5,11 @@
     xmlns:viewModels="clr-namespace:MyBooks.Client.ViewModels;assembly=MyBooks.Client"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:dtos="clr-namespace:MyBooks.Dto.Dtos;assembly=MyBooks.Dto">
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dtos="clr-namespace:MyBooks.Dto.Dtos;assembly=MyBooks.Dto"
+    d:DesignHeight="720" d:DesignWidth="1280" mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel, IsDesignTimeCreatable=False}">
 
     <Grid Margin="12">
         <Grid.ColumnDefinitions>
