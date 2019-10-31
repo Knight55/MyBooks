@@ -146,12 +146,7 @@ namespace MyBooks.Api
             //services.AddHangfireServer();
 
             // Services
-            services.AddOptions<GoodreadsOptions>().Configure(options =>
-            {
-                options.BaseUrl = Configuration["Goodreads:baseUrl"];
-                options.Key = Configuration["Goodreads:key"];
-                options.Secret = Configuration["Goodreads:secret"];
-            });
+            services.Configure<GoodreadsOptions>(Configuration.GetSection("Goodreads"));
             services.AddHttpClient<GoodreadsService>();
 
             services.AddSingleton(MapperConfig.Configure());
