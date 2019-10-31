@@ -48,13 +48,6 @@ namespace MyBooks.Api
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // Logging
-            //services.AddLogging(loggingBuilder =>
-            //{
-            //    loggingBuilder.AddConfiguration(Configuration.GetSection("Logging"));
-            //    loggingBuilder.AddConsole();
-            //});
-
             // Swagger
             services.AddSwaggerGen(o =>
             {

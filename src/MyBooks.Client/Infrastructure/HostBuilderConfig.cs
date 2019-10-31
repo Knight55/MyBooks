@@ -49,10 +49,9 @@ namespace MyBooks.Client.Infrastructure
                     if (args != null)
                         config.AddCommandLine(args);
                 })
-                .ConfigureLogging((context, logging) =>
+                .UseSerilog((context, configuration) =>
                 {
-                    Log.Logger = LoggerConfig.Configure(context.Configuration).CreateLogger();
-                    logging.AddSerilog(Log.Logger, true);
+                    configuration.ReadFrom.Configuration(context.Configuration);
                 })
                 .ConfigureServices((context, services) =>
                 {
@@ -84,7 +83,7 @@ namespace MyBooks.Client.Infrastructure
                     resolver.InitializeSplat();
                     resolver.InitializeReactiveUI();
                     resolver.RegisterViewsForViewModels(Assembly.GetEntryAssembly());
-                    resolver.UseSerilogFullLogger(Log.Logger);
+                    resolver.UseSerilogFullLogger();
                 });
 
             return hostBuilder;
