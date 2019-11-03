@@ -6,6 +6,8 @@ namespace MyBooks.Dal.Entities
     {
         public int Id { get; set; }
 
+        public string GoodreadsId { get; set; }
+
         public string IsbnNumber { get; set; }
 
         public DateTime DateOfPublish { get; set; }

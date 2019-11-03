@@ -10,7 +10,7 @@ namespace MyBooks.Dal.Entities
 
         public string Title { get; set; }
 
-        public string CoverImagePath { get; set; }
+        public string CoverImageUrl { get; set; }
 
         public string Summary { get; set; }
 
