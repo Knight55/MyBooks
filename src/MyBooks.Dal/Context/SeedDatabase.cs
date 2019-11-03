@@ -14,36 +14,31 @@ namespace MyBooks.Dal.Context
                 {
                     Title = "The Way of Kings",
                     Genre = "Fantasy",
-                    GoodreadsId = "7235533-the-way-of-kings",
-                    CoverImagePath = "thewayofkings.jpg"
+                    GoodreadsId = "7235533-the-way-of-kings"
                 };
                 var book2 = new Book
                 {
                     Title = "The Black Prism",
                     Genre = "Fantasy",
-                    GoodreadsId = "7165300-the-black-prism",
-                    CoverImagePath = "blackprism.jpg"
+                    GoodreadsId = "7165300-the-black-prism"
                 };
                 var book3 = new Book
                 {
                     Title = "The Eye of the World",
                     Genre = "Fantasy",
-                    GoodreadsId = "228665.The_Eye_of_the_World",
-                    CoverImagePath = "theeyeoftheworld.jpg"
+                    GoodreadsId = "228665.The_Eye_of_the_World"
                 };
                 var book4 = new Book
                 {
                     Title = "Red Rising",
                     Genre = "Scifi",
-                    GoodreadsId = "15839976-red-rising",
-                    CoverImagePath = "redrising.jpg"
+                    GoodreadsId = "15839976-red-rising"
                 };
                 var book5 = new Book
                 {
                     Title = "The Broken Eye",
                     Genre = "Fantasy",
-                    GoodreadsId = "12652457-the-broken-eye",
-                    CoverImagePath = "brokeneye.jpg"
+                    GoodreadsId = "12652457-the-broken-eye"
                 };
 
                 var author1 = new Author {Name = "Brandon Sanderson", DateOfBirth = new DateTime(1975, 12, 19)};
