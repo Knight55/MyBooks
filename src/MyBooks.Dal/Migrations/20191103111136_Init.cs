@@ -70,7 +70,7 @@ namespace MyBooks.Dal.Migrations
                     Id = table.Column<int>(nullable: false),
                     GoodreadsId = table.Column<string>(nullable: true),
                     Title = table.Column<string>(nullable: true),
-                    CoverImagePath = table.Column<string>(nullable: true),
+                    CoverImageUrl = table.Column<string>(nullable: true),
                     Summary = table.Column<string>(nullable: true),
                     Genre = table.Column<string>(nullable: true)
                 },

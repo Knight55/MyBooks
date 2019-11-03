@@ -10,7 +10,7 @@ using MyBooks.Dal.Context;
 namespace MyBooks.Dal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190926105953_Init")]
+    [Migration("20191103111136_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -245,7 +245,7 @@ namespace MyBooks.Dal.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
-                    b.Property<string>("CoverImagePath")
+                    b.Property<string>("CoverImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Genre")
