@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace MyBooks.Dto
+namespace MyBooks.Dto.Goodreads
 {
     [Serializable]
     [XmlRoot("GoodreadsResponse")]
-    public class Response
+    public class GoodreadsResponse
     {
         [XmlElement("search", typeof(SearchResult))]
         public SearchResult SearchResult { get; set; }
+
+        [XmlElement("book", typeof(GoodreadsBook))]
+        public GoodreadsBook Book { get; set; }
     }
 
     [Serializable]
@@ -18,12 +21,12 @@ namespace MyBooks.Dto
         public string NumberOfResults { get; set; }
 
         [XmlArray("results")]
-        [XmlArrayItem("work", typeof(Work), IsNullable = false)]
-        public Work[] Works { get; set; }
+        [XmlArrayItem("work", typeof(GoodreadsWork), IsNullable = false)]
+        public GoodreadsWork[] Works { get; set; }
     }
 
     [Serializable]
-    public class Work
+    public class GoodreadsWork
     {
         [XmlElement("id")]
         public string Id { get; set; }
@@ -47,11 +50,11 @@ namespace MyBooks.Dto
         public string AverageRating { get; set; }
 
         [XmlElement("best_book")]
-        public Book Book { get; set; }
+        public GoodreadsBook Book { get; set; }
     }
 
     [Serializable]
-    public class Book
+    public class GoodreadsBook
     {
         [XmlAttribute("type")]
         public string Type { get; set; }
@@ -62,23 +65,44 @@ namespace MyBooks.Dto
         [XmlElement("title")]
         public string Title { get; set; }
 
+        public string Isbn { get; set; }
+
+        [XmlElement("publication_year")]
+        public string YearOfPublication { get; set; }
+
+        [XmlElement("publication_month")]
+        public string MonthOfPublication { get; set; }
+
+        [XmlElement("publication_day")]
+        public string DayOfPublication { get; set; }
+
+        [XmlElement("publisher")]
+        public string Publisher { get; set; }
+
+        [XmlElement("description")]
+        public string Description { get; set; }
+
         [XmlElement("image_url")]
         public string ImageUrl { get; set; }
 
         [XmlElement("small_image_url")]
         public string SmallImageUrl { get; set; }
 
-        [XmlElement("author")]
-        public Author[] Authors { get; set; }
+        [XmlArray("authors")]
+        [XmlArrayItem("author", typeof(GoodreadsAuthor), IsNullable = true)]
+        public GoodreadsAuthor[] Authors { get; set; }
     }
 
     [Serializable]
-    public class Author
+    public class GoodreadsAuthor
     {
         [XmlElement("id")]
         public string Id { get; set; }
 
         [XmlElement("name")]
         public string Name { get; set; }
+
+        [XmlElement("image_url")]
+        public string ImageUrl { get; set; }
     }
 }
