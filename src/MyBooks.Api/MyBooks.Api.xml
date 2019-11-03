@@ -32,19 +32,27 @@
             Public API controller for books.
             </summary>
         </member>
-        <member name="M:MyBooks.Api.Controllers.BooksController.#ctor(MyBooks.Bll.Services.IBookService,AutoMapper.IMapper,MyBooks.Api.Services.GoodreadsService)">
+        <member name="M:MyBooks.Api.Controllers.BooksController.#ctor(MyBooks.Bll.Services.IBookService,AutoMapper.IMapper,MyBooks.Api.Services.GoodreadsService,Microsoft.Extensions.Logging.ILogger{MyBooks.Api.Controllers.BooksController})">
             <summary>
             
             </summary>
             <param name="bookService"></param>
             <param name="mapper"></param>
             <param name="goodreadsService"></param>
+            /// <param name="logger"></param>
         </member>
         <member name="M:MyBooks.Api.Controllers.BooksController.Get">
             <summary>
             Get a list of all books.
             </summary>
             <returns>Returns all books.</returns>
+        </member>
+        <member name="M:MyBooks.Api.Controllers.BooksController.GetByGoodreadsId(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="goodreadsId"></param>
+            <returns></returns>
         </member>
         <member name="M:MyBooks.Api.Controllers.BooksController.Get(System.Int32)">
             <summary>
@@ -82,6 +90,29 @@
             </summary>
             <param name="id"></param>
             <returns></returns>
+        </member>
+        <member name="T:MyBooks.Api.GoodreadsEntityNotFoundException">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MyBooks.Api.GoodreadsEntityNotFoundException.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MyBooks.Api.GoodreadsEntityNotFoundException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MyBooks.Api.GoodreadsEntityNotFoundException.#ctor(System.String,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+            <param name="innerException"></param>
         </member>
         <member name="T:MyBooks.Api.Mapping.MapperConfig">
             <summary>
@@ -146,6 +177,13 @@
             <summary>
             
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MyBooks.Api.Services.GoodreadsService.GetBook(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="T:MyBooks.Api.Startup">
