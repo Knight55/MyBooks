@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MyBooks.Api.Services;
+using MyBooks.Bll.Exceptions;
 using MyBooks.Bll.Services;
 using MyBooks.Dto.Dtos;
 
@@ -22,6 +25,7 @@ namespace MyBooks.Api.Controllers
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
         private readonly GoodreadsService _goodreadsService;
+        private readonly ILogger<BooksController> _logger;
 
         /// <summary>
         /// 
@@ -29,11 +33,17 @@ namespace MyBooks.Api.Controllers
         /// <param name="bookService"></param>
         /// <param name="mapper"></param>
         /// <param name="goodreadsService"></param>
-        public BooksController(IBookService bookService, IMapper mapper, GoodreadsService goodreadsService)
+        /// /// <param name="logger"></param>
+        public BooksController(
+            IBookService bookService,
+            IMapper mapper,
+            GoodreadsService goodreadsService,
+            ILogger<BooksController> logger)
         {
             _bookService = bookService;
             _mapper = mapper;
             _goodreadsService = goodreadsService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -41,9 +51,46 @@ namespace MyBooks.Api.Controllers
         /// </summary>
         /// <returns>Returns all books.</returns>
         [HttpGet]
+        [ProducesResponseType(typeof(Book), (int)HttpStatusCode.OK)]
         public IActionResult Get()
         {
             return Ok(_mapper.Map<List<Book>>(_bookService.GetBooks()));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="goodreadsId"></param>
+        /// <returns></returns>
+        [HttpGet("Goodreads/{id}")]
+        [ProducesResponseType(typeof(Book), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetByGoodreadsId(string id)
+        {
+            try
+            {
+                var book = _bookService.GetBook(id);
+
+                return Ok(book);
+            }
+            catch (EntityNotFoundException e)
+            {
+                _logger.LogError(e, e.Message);
+            }
+
+            try
+            {
+                var response = await _goodreadsService.GetBook(id);
+                var book = new Book(response.Book);
+
+                _bookService.InsertBook(_mapper.Map<Dal.Entities.Book>(book));
+
+                return Ok(book);
+            }
+            catch (GoodreadsEntityNotFoundException e)
+            {
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+            }
         }
 
         /// <summary>
@@ -67,20 +114,27 @@ namespace MyBooks.Api.Controllers
         [HttpGet("Search/{searchTerm}")]
         [ProducesResponseType(typeof(List<Book>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Search(string searchTerm)
-        { 
-            // Test
-            var response = await _goodreadsService.SearchBooks(searchTerm);
-            if (response != null)
+        {
+            //var books = _bookService.SearchBooks(searchTerm);
+            //if (books.Any())
+            //{
+            //    return Ok(_mapper.Map<List<Book>>(books));
+            //}
+
+            try
             {
+                var response = await _goodreadsService.SearchBooks(searchTerm);
+
                 var books = response.SearchResult.Works
                     .Select(work => new Book(work))
                     .ToList();
 
                 return Ok(books);
             }
-
-            return NotFound();
-            //return Ok(_mapper.Map<List<Book>>(_bookService.SearchBooks(searchTerm)));
+            catch (GoodreadsEntityNotFoundException e)
+            {
+                return NotFound();
+            }
         }
 
         /// <summary>
