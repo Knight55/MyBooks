@@ -20,19 +20,30 @@ namespace MyBooks.Bll.Services
         {
             return _context.Books
                 .Include(b => b.Editions)
-                .ThenInclude(e => e.Publisher)
+                    .ThenInclude(e => e.Publisher)
                 .Include(b => b.BookAuthors)
-                .ThenInclude(w => w.Author)
+                    .ThenInclude(w => w.Author)
+                .Include(b => b.Ratings)
                 .SingleOrDefault(b => b.Id == bookId) ?? throw new EntityNotFoundException("Book not found.");
+        }
+
+        public Book GetBook(string goodreadsId)
+        {
+            return _context.Books
+                       .Include(b => b.Editions)
+                       .ThenInclude(e => e.Publisher)
+                       .Include(b => b.BookAuthors)
+                       .ThenInclude(w => w.Author)
+                       .Include(b => b.Ratings)
+                       .SingleOrDefault(b => b.GoodreadsId.Equals(goodreadsId)) ??
+                   throw new EntityNotFoundException("Book not found.");
         }
 
         public IEnumerable<Book> GetBooks()
         {
             var books = _context.Books
-                .Include(b => b.Editions)
-                .ThenInclude(e => e.Publisher)
                 .Include(b => b.BookAuthors)
-                .ThenInclude(w => w.Author)
+                    .ThenInclude(w => w.Author)
                 .ToList();
 
             return books;
@@ -42,10 +53,8 @@ namespace MyBooks.Bll.Services
         {
             var books = _context.Books
                 .Where(b => b.Title.Contains(searchTerm))
-                .Include(b => b.Editions)
-                .ThenInclude(e => e.Publisher)
                 .Include(b => b.BookAuthors)
-                .ThenInclude(w => w.Author)
+                    .ThenInclude(w => w.Author)
                 .ToList();
 
             return books;
@@ -79,7 +88,7 @@ namespace MyBooks.Bll.Services
 
         public void DeleteBook(int bookId)
         {
-            _context.Books.Remove(new Book { Id = bookId });
+            _context.Books.Remove(new Book {Id = bookId});
 
             try
             {

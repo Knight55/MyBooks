@@ -5,7 +5,18 @@ namespace MyBooks.Bll.Services
 {
     public interface IBookService
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
         Book GetBook(int bookId);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="goodreadsId"></param>
+        /// <returns></returns>
+        Book GetBook(string goodreadsId);
         IEnumerable<Book> GetBooks();
         IEnumerable<Book> SearchBooks(string searchTerm);
         Book InsertBook(Book newBook);
