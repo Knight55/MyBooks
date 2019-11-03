@@ -5,18 +5,22 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using MyBooks.Client.Services;
 using MyBooks.Dto.Dtos;
 using ReactiveUI;
 using Splat;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace MyBooks.Client.ViewModels
 {
     public class BookSearchViewModel : ReactiveObject, IRoutableViewModel
     {
+        private readonly IMyBooksApiClient _myBooksApiClient;
+        private readonly ILogger<BookSearchViewModel> _logger;
+
         public string UrlPathSegment => "bookSearch";
         public IScreen HostScreen { get; }
-        private readonly IMyBooksApiClient _myBooksApiClient;
 
         private string _searchTerm = "";
         public string SearchTerm
@@ -34,17 +38,24 @@ namespace MyBooks.Client.ViewModels
         public ReactiveCommand<Book, Unit> GoToBookDetails { get; }
         public ReactiveCommand<int, Unit> DeleteBookCommand { get; }
 
-        public BookSearchViewModel(IScreen hostScreen, IMyBooksApiClient myBooksApiClient)
+        public BookSearchViewModel(IScreen hostScreen, IMyBooksApiClient myBooksApiClient, ILogger<BookSearchViewModel> logger)
         {
             HostScreen = hostScreen;
             _myBooksApiClient = myBooksApiClient;
+            _logger = logger;
 
-            GoToBookDetails = ReactiveCommand.Create<Book>(b =>
+            GoToBookDetails = ReactiveCommand.CreateFromTask<Book>(async b =>
             {
                 var bookDetailsViewModel = Locator.Current.GetService<BookDetailsViewModel>();
-                bookDetailsViewModel.Book = b;
+                var book = await _myBooksApiClient.GetBookByGoodreadsId(b.GoodreadsId);
+                bookDetailsViewModel.Book = book;
                 HostScreen.Router.Navigate.Execute(bookDetailsViewModel).Subscribe();
             });
+
+            GoToBookDetails.ThrownExceptions
+                .Subscribe(x =>
+                    _logger.LogError($"Exception occured when executing GoToBookDetails: {x.Message}", x));
+
             DeleteBookCommand = ReactiveCommand.Create<int>(DeleteBook);
 
             _results = this

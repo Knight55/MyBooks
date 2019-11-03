@@ -9,17 +9,18 @@ namespace MyBooks.Client.ViewModels
 {
     public class BookDetailsViewModel : ReactiveObject, IRoutableViewModel
     {
-        public string UrlPathSegment => "bookDetails";
-        public IScreen HostScreen { get; }
         private readonly IMyBooksApiClient _myBooksApiClient;
 
+        public string UrlPathSegment => "bookDetails";
+        public IScreen HostScreen { get; }
+        
         public ReactiveCommand<Unit, Unit> GoBack { get; }
         public ReactiveCommand<Unit, Unit> OpenGoodreadsUrl { get; }
         public ReactiveCommand<Unit, Unit> UpdateBookCommand { get; }
 
         public Book Book { get; set; }
 
-        public Uri CoverUrl => new Uri(Book.CoverUrl);
+        public Uri CoverUrl => new Uri(Book.CoverImageUrl);
         public string Title => Book.Title;
 
         public string Summary

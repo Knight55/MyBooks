@@ -11,6 +11,9 @@ namespace MyBooks.Client.Services
         [Get("/api/Books/{id}")]
         Task<Book> GetBookAsync(int id);
 
+        [Get("/api/Books/Goodreads/{id}")]
+        Task<Book> GetBookByGoodreadsId(string id);
+
         [Get("/api/Books")]
         Task<List<Book>> GetBooksAsync();
 
