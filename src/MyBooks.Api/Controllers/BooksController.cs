@@ -72,7 +72,7 @@ namespace MyBooks.Api.Controllers
             var response = await _goodreadsService.SearchBooks(searchTerm);
             if (response != null)
             {
-                var books = response.SearchItem.results
+                var books = response.SearchResult.Works
                     .Select(work => new Book(work))
                     .ToList();
 

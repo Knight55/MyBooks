@@ -35,7 +35,7 @@ namespace MyBooks.Api.Services
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<GoodreadsResponse> SearchBooks(string searchTerm)
+        public async Task<Response> SearchBooks(string searchTerm)
         {
             var query = new Dictionary<string, string>
             {
@@ -46,15 +46,11 @@ namespace MyBooks.Api.Services
             var response = await _httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadAsStringAsync();
-                var buffer = Encoding.UTF8.GetBytes(result);
-                using (var stream = new MemoryStream(buffer))
-                {
-                    var serializer = new XmlSerializer(typeof(GoodreadsResponse));
-                    var goodreadsResponse = (GoodreadsResponse) serializer.Deserialize(stream);
+                var result = await response.Content.ReadAsStreamAsync();
+                var serializer = new XmlSerializer(typeof(Response));
+                var goodreadsResponse = (Response) serializer.Deserialize(result);
 
-                    return goodreadsResponse;
-                }
+                return goodreadsResponse;
             }
 
             return null;

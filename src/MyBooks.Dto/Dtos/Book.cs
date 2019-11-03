@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace MyBooks.Dto.Dtos
 {
@@ -7,7 +8,13 @@ namespace MyBooks.Dto.Dtos
     {
         public Book()
         {
-            
+        }
+
+        public Book(Work work)
+        {
+            Title = work.Book.Title;
+            CoverUrl = work.Book.ImageUrl;
+            Rating = double.Parse(work.AverageRating, NumberStyles.AllowDecimalPoint, NumberFormatInfo.InvariantInfo);
         }
 
         public int Id { get; set; }
@@ -29,12 +36,5 @@ namespace MyBooks.Dto.Dtos
         public string GoodreadsUrl { get; set; }
 
         public List<int> AuthorIds { get; set; }
-
-        public Book(GoodreadsResponseSearchResultsWork work)
-        {
-            Title = work.best_book.title;
-            CoverUrl = work.best_book.image_url;
-            //Rating = double.Parse(work.average_rating.Value);
-        }
     }
 }
