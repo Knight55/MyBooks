@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using MyBooks.Dto;
+using MyBooks.Dto.Goodreads;
 
 namespace MyBooks.Api.Services
 {
@@ -35,25 +33,55 @@ namespace MyBooks.Api.Services
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<Response> SearchBooks(string searchTerm)
+        public async Task<GoodreadsResponse> SearchBooks(string searchTerm)
         {
             var query = new Dictionary<string, string>
             {
                 ["key"] = _options.Key,
                 ["q"] = searchTerm
             };
+
             var url = QueryHelpers.AddQueryString("/search", query);
             var response = await _httpClient.GetAsync(url);
-            if (response.IsSuccessStatusCode)
-            {
-                var result = await response.Content.ReadAsStreamAsync();
-                var serializer = new XmlSerializer(typeof(Response));
-                var goodreadsResponse = (Response) serializer.Deserialize(result);
 
-                return goodreadsResponse;
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new GoodreadsEntityNotFoundException($"Status code: {response.StatusCode}");
             }
 
-            return null;
+            var result = await response.Content.ReadAsStreamAsync();
+            var serializer = new XmlSerializer(typeof(GoodreadsResponse));
+            var goodreadsResponse = (GoodreadsResponse)serializer.Deserialize(result);
+
+            return goodreadsResponse;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<GoodreadsResponse> GetBook(string id)
+        {
+            var query = new Dictionary<string, string>
+            {
+                ["key"] = _options.Key,
+                ["id"] = id
+            };
+
+            var url = QueryHelpers.AddQueryString("/book/show", query);
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new GoodreadsEntityNotFoundException($"Status code: {response.StatusCode}");
+            }
+
+            var result = await response.Content.ReadAsStreamAsync();
+            var serializer = new XmlSerializer(typeof(GoodreadsResponse));
+            var goodreadsResponse = (GoodreadsResponse)serializer.Deserialize(result);
+
+            return goodreadsResponse;
         }
     }
 }
