@@ -190,7 +190,7 @@ namespace MyBooks.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            context.Seed();
+            //context.Seed();
         }
     }
 }
