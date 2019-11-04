@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Disposables;
 using System.Windows;
+using MahApps.Metro.Controls;
 using MyBooks.Client.ViewModels;
 using MyBooks.Client.Wpf.Views;
 using ReactiveUI;
@@ -10,7 +11,7 @@ namespace MyBooks.Client.Wpf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : ReactiveWindow<MainViewModel>
+    public partial class MainWindow : MetroWindow, IViewFor<MainViewModel>
     {
         //private OidcClient _oidcClient = null;
 
@@ -21,10 +22,13 @@ namespace MyBooks.Client.Wpf
 
             this.WhenActivated(disposableRegistration =>
             {
-                this.Bind(ViewModel, vm => vm.Router, v => v.viewHost.Router)
+                this.Bind(ViewModel, vm => vm.Router, v => v.ViewHost.Router)
                     .DisposeWith(disposableRegistration);
 
-                viewHost.Router.Navigate.Execute(Locator.Current.GetService<BookSearchViewModel>());
+                this.BindCommand(ViewModel, vm => vm.UserManagerCommand, v => v.UserManagerButton)
+                    .DisposeWith(disposableRegistration);
+
+                ViewHost.Router.Navigate.Execute(Locator.Current.GetService<BookSearchViewModel>());
             });
         }
 
@@ -97,5 +101,36 @@ namespace MyBooks.Client.Wpf
         //        Debug.WriteLine($"Hello {name}");
         //    }
         //}
+
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register(
+                "ViewModel",
+                typeof(MainViewModel),
+                typeof(MainWindow),
+                new PropertyMetadata(null));
+
+        /// <inheritdoc/>
+        public MainViewModel ViewModel
+        {
+            get => (MainViewModel) GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
+        }
+
+        object IViewFor.ViewModel
+        {
+            get => ViewModel;
+            set => ViewModel = (MainViewModel) value;
+        }
+
+        private void HamburgerMenu_OnItemClick(object sender, ItemClickEventArgs args)
+        {
+            HamburgerMenu.Content = args.ClickedItem;
+            HamburgerMenu.IsPaneOpen = false;
+        }
+
+        private void HamburgerMenu_OnOptionsItemClick(object sender, ItemClickEventArgs args)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

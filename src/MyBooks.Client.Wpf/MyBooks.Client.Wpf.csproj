@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0531" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="3.0.0-alpha0258" />
     <PackageReference Include="ReactiveUI" Version="10.5.7" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="10.5.7" />
     <PackageReference Include="ReactiveUI.WPF" Version="10.5.7" />
