@@ -4,7 +4,7 @@ using MyBooks.Dal.Entities;
 
 namespace MyBooks.Dal.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, long>
+    public class ApplicationDbContext : IdentityUserContext<ApplicationUser, long>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

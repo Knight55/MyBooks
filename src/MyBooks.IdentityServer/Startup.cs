@@ -35,7 +35,7 @@ namespace MyBooks.IdentityServer
             });
 
             // Identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
+            services.AddIdentityCore<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
