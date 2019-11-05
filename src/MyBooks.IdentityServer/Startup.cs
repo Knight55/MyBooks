@@ -1,38 +1,35 @@
 ﻿using System;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyBooks.Dal.Context;
-using MyBooks.Dal.Entities;
 
 namespace MyBooks.IdentityServer
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            Configuration = configuration;
-            Environment = environment;
+            _configuration = configuration;
+            _environment = environment;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Mvc
-            services.AddMvc();
+            // Controllers and views
+            services.AddControllersWithViews();
 
             // DBContext
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                options.UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"));
             });
 
             // Identity
@@ -64,7 +61,7 @@ namespace MyBooks.IdentityServer
                 //})
                 //.AddAspNetIdentity<ApplicationUser>();
 
-            if (Environment.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
                 builder.AddDeveloperSigningCredential();
             }
@@ -94,6 +91,8 @@ namespace MyBooks.IdentityServer
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseRouting();
+
+            app.UseEndpoints(builder => { builder.MapDefaultControllerRoute(); });
         }
     }
 }

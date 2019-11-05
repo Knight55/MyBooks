@@ -27,9 +27,7 @@ namespace MyBooks.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder
-                        .ConfigureKestrel(serverOptions => { })
-                        .UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>();
                 })
                 .UseSerilog((context, config) =>
                 {
