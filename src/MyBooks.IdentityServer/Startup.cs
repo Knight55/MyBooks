@@ -36,9 +36,9 @@ namespace MyBooks.IdentityServer
             });
 
             // Identity
-            services.AddIdentityCore<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentityCore<ApplicationUser>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
             // IdentityServer4
             var builder = services.AddIdentityServer(options =>
@@ -49,20 +49,20 @@ namespace MyBooks.IdentityServer
                     options.Events.RaiseSuccessEvents = true;
                 })
                 // This adds the config data from DB (clients, resources)
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = b =>
-                        b.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
-                })
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = b =>
-                        b.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
-                })
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryApiResources(Config.ApiResources)
+                .AddInMemoryClients(Config.Clients);
+                //.AddConfigurationStore(options =>
+                //{
+                //    options.ConfigureDbContext = b =>
+                //        b.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                //})
+                //.AddOperationalStore(options =>
+                //{
+                //    options.ConfigureDbContext = b =>
+                //        b.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                //})
+                //.AddAspNetIdentity<ApplicationUser>();
 
             if (Environment.IsDevelopment())
             {
@@ -74,9 +74,9 @@ namespace MyBooks.IdentityServer
             }
 
             // Authentication
-            services.Configure<GoogleOptions>(Configuration.GetSection("Authentication:Google"));
-            services.AddAuthentication()
-                .AddGoogle();
+            //services.Configure<GoogleOptions>(Configuration.GetSection("Authentication:Google"));
+            //services.AddAuthentication()
+            //    .AddGoogle();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

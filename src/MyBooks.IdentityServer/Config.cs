@@ -3,9 +3,15 @@ using IdentityServer4.Models;
 
 namespace MyBooks.IdentityServer
 {
-    public class Config
+    public static class Config
     {
-        public static IEnumerable<IdentityResource> GetIdentityResources()
+        public static IEnumerable<IdentityResource> IdentityResources => GetIdentityResources();
+
+        public static IEnumerable<ApiResource> ApiResources => GetApiResources();
+
+        public static IEnumerable<Client> Clients => GetClients();
+
+        private static IEnumerable<IdentityResource> GetIdentityResources()
         {
             return new List<IdentityResource>
             {
@@ -15,7 +21,7 @@ namespace MyBooks.IdentityServer
             };
         }
 
-        public static IEnumerable<ApiResource> GetApiResources()
+        private static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>
             {
@@ -26,10 +32,20 @@ namespace MyBooks.IdentityServer
             };
         }
 
-        public static IEnumerable<Client> GetClients()
+        private static IEnumerable<Client> GetClients()
         {
             return new List<Client>
             {
+                new Client
+                {
+                    ClientId = "client",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes = { "myBooksApi" }
+                },
                 // Native clients
                 new Client
                 {
