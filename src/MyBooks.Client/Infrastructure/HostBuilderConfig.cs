@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MyBooks.Client.Options;
 using MyBooks.Client.Services;
 using MyBooks.Client.ViewModels;
 using ReactiveUI;
@@ -62,13 +63,17 @@ namespace MyBooks.Client.Infrastructure
                         options.ShutdownTimeout = TimeSpan.FromSeconds(int.Parse(timeout));
                     });
 
-                    // REST service for MyBooks API
-                    var apiUrl = context.Configuration.GetSection("apiUrl").Value;
-                    services.AddHttpClient("myBooksApi", c =>
-                    {
-                        c.BaseAddress = new Uri(apiUrl);
-                    })
-                    .AddTypedClient(c => RestService.For<IMyBooksApiClient>(c));
+                    // REST services
+                    var apiUrl = context.Configuration.GetSection("Api:UrlHttp").Value;
+                    services.AddHttpClient("myBooksApi", c => { c.BaseAddress = new Uri(apiUrl); })
+                        .AddTypedClient(c => RestService.For<IMyBooksApiClient>(c));
+
+                    var tokenServiceUrl = context.Configuration.GetSection("TokenService:UrlHttp").Value;
+                    services.AddHttpClient("tokenService", c => { c.BaseAddress = new Uri(tokenServiceUrl); });
+
+                    // Other services
+                    services.Configure<TokenRequestOptions>(context.Configuration.GetSection("TokenService:Token"));
+                    services.AddTransient<ITokenService, TokenService>();
 
                     // View models
                     services.AddSingleton<IScreen, MainViewModel>();

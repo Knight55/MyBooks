@@ -10,7 +10,6 @@ using MyBooks.Client.Services;
 using MyBooks.Dto.Dtos;
 using ReactiveUI;
 using Splat;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace MyBooks.Client.ViewModels
 {

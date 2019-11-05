@@ -1,4 +1,3 @@
 {
-  "shutdownTimeoutSeconds": 10,
-  "apiUrl": "http://localhost:5000"
+  "shutdownTimeoutSeconds": 10
 }
