@@ -20,10 +20,10 @@ namespace MyBooks.Api.Services
         /// <summary>
         /// 
         /// </summary>
-        public GoodreadsService(HttpClient httpClient, IOptionsMonitor<GoodreadsOptions> optionsMonitor)
+        public GoodreadsService(HttpClient httpClient, IOptions<GoodreadsOptions> optionsMonitor)
         {
             _httpClient = httpClient;
-            _options = optionsMonitor.CurrentValue;
+            _options = optionsMonitor.Value;
 
             _httpClient.BaseAddress = new Uri(_options.BaseUrl);
         }
