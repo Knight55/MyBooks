@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -73,12 +74,9 @@ namespace MyBooks.IdentityServer
             }
 
             // Authentication
+            services.Configure<GoogleOptions>(Configuration.GetSection("Authentication:Google"));
             services.AddAuthentication()
-                .AddGoogle("Google", options =>
-                {
-                    options.ClientId = "224004987375-7e4sdt8m5djgi0oumn7rg7oo8brtja57.apps.googleusercontent.com";
-                    options.ClientSecret = "ojJCvo3sPucTl-YV5Vkl_pMY";
-                });
+                .AddGoogle();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
