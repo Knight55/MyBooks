@@ -107,6 +107,13 @@ namespace MyBooks.Api
             //        options.ApiName = "myBooksApi";
             //        options.ApiSecret = "secret";
             //    });
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://localhost:5001";
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "myBooksApi";
+                });
 
             // Authorization
             //services.AddAuthorization(options =>
@@ -183,7 +190,8 @@ namespace MyBooks.Api
             app.UseProblemDetails();
             app.UseRouting();
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
