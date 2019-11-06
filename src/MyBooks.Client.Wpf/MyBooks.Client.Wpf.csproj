@@ -14,6 +14,7 @@
     <PackageReference Include="ReactiveUI" Version="10.5.7" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="10.5.7" />
     <PackageReference Include="ReactiveUI.WPF" Version="10.5.7" />
+    <PackageReference Include="Unofficial.Microsoft.mshtml" Version="7.0.3300" />
   </ItemGroup>
 
   <ItemGroup>
