@@ -10,7 +10,7 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using MyBooks.Dal.Entities;
 
-namespace MyBooks.IdentityServer
+namespace MyBooks.IdentityServer.Services
 {
     public class ProfileService : IProfileService
     {

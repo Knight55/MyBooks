@@ -1,11 +1,19 @@
-﻿using System;
+using System;
+using IdentityServer4;
+using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Configuration;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyBooks.Dal.Context;
+using MyBooks.Dal.Entities;
+using MyBooks.IdentityServer.Services;
 
 namespace MyBooks.IdentityServer
 {
@@ -33,9 +41,9 @@ namespace MyBooks.IdentityServer
             });
 
             // Identity
-            //services.AddIdentityCore<ApplicationUser>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             // IdentityServer4
             var builder = services.AddIdentityServer(options =>
@@ -44,22 +52,44 @@ namespace MyBooks.IdentityServer
                     options.Events.RaiseInformationEvents = true;
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseSuccessEvents = true;
+
+                    options.UserInteraction = new UserInteractionOptions
+                    {
+                        LogoutUrl = "/Account/Logout",
+                        LoginUrl = "/Account/Login",
+                        LoginReturnUrlParameter = "returnUrl"
+                    };
                 })
-                // This adds the config data from DB (clients, resources)
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiResources(Config.ApiResources)
-                .AddInMemoryClients(Config.Clients);
+                .AddInMemoryClients(Config.Clients)
+                //.AddTestUsers(Config.Users)
                 //.AddConfigurationStore(options =>
                 //{
                 //    options.ConfigureDbContext = b =>
-                //        b.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                //        b.UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"));
                 //})
                 //.AddOperationalStore(options =>
                 //{
                 //    options.ConfigureDbContext = b =>
-                //        b.UseSqlServer(Configuration.GetConnectionString("SqlServerConnection"));
+                //        b.UseSqlServer(_configuration.GetConnectionString("SqlServerConnection"));
                 //})
-                //.AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<ApplicationUser>();
+
+            // Authentication
+            services.AddAuthentication()
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5001";
+                    options.ApiName = "myBooksApi";
+                })
+                .AddGoogle("Google", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                    options.ClientId = _configuration["Authentication:Google:ClientId"];
+                    options.ClientSecret = _configuration["Authentication:Google:ClientSecret"];
+                });
 
             if (_environment.IsDevelopment())
             {
@@ -70,10 +100,8 @@ namespace MyBooks.IdentityServer
                 throw new Exception("need to configure key material");
             }
 
-            // Authentication
-            //services.Configure<GoogleOptions>(Configuration.GetSection("Authentication:Google"));
-            //services.AddAuthentication()
-            //    .AddGoogle();
+            // TestUserService
+            //services.AddTransient<TestUserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,10 +117,16 @@ namespace MyBooks.IdentityServer
             }
             
             app.UseStaticFiles();
-            app.UseIdentityServer();
+
             app.UseRouting();
+            app.UseIdentityServer();
+            app.UseAuthorization();
 
             app.UseEndpoints(builder => { builder.MapDefaultControllerRoute(); });
+
+            // Add TestUsers to database
+            //var testUserService = app.ApplicationServices.GetRequiredService<TestUserService>();
+            //testUserService.AddUsers();
         }
     }
 }
