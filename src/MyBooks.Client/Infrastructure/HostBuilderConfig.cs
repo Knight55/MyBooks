@@ -1,6 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using IdentityModel.OidcClient;
+using IdentityModel.OidcClient.Browser;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +14,7 @@ using MyBooks.Client.ViewModels;
 using ReactiveUI;
 using Refit;
 using Serilog;
+using Serilog.Hosting;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Serilog;
@@ -65,15 +70,40 @@ namespace MyBooks.Client.Infrastructure
 
                     // REST services
                     var apiUrl = context.Configuration.GetSection("Api:UrlHttp").Value;
-                    services.AddHttpClient("myBooksApi", c => { c.BaseAddress = new Uri(apiUrl); })
-                        .AddTypedClient(c => RestService.For<IMyBooksApiClient>(c));
+                    services.AddRefitClient<IMyBooksApiClient>(new RefitSettings
+                        {
+                            AuthorizationHeaderValueGetter = () => Task.FromResult("access token??")
+                        })
+                        .ConfigureHttpClient(c => c.BaseAddress = new Uri(apiUrl));
 
                     var tokenServiceUrl = context.Configuration.GetSection("TokenService:UrlHttp").Value;
-                    services.AddHttpClient("tokenService", c => { c.BaseAddress = new Uri(tokenServiceUrl); });
+                    services.AddHttpClient("tokenService", c =>
+                    {
+                        c.BaseAddress = new Uri(tokenServiceUrl);
+                    });
 
                     // Other services
                     services.Configure<TokenRequestOptions>(context.Configuration.GetSection("TokenService:Token"));
                     services.AddTransient<ITokenService, TokenService>();
+
+                    var browser = Assembly.GetEntryAssembly()
+                        ?.GetTypes().FirstOrDefault(t => typeof(IBrowser).IsAssignableFrom(t));
+                    services.Configure<OidcClientOptions>(options =>
+                    {
+                        options.Authority = "http://localhost:5001/";
+                        //"https://demo.identityserver.io/";
+                        options.ClientId = "native.code";
+                        options.Scope = "openid profile email";
+                        options.RedirectUri = "https://notused";
+                        options.ResponseMode = OidcClientOptions.AuthorizeResponseMode.FormPost;
+                        options.Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode;
+                        options.LoggerFactory.AddSerilog();
+                        if (browser != null)
+                            options.Browser = (IBrowser) Activator.CreateInstance(browser);
+                        else
+                            options.Browser = null;
+                    });
+                    services.AddSingleton<IUserManagerService, UserManagerService>();
 
                     // View models
                     services.AddSingleton<IScreen, MainViewModel>();
