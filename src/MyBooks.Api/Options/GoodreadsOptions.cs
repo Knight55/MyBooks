@@ -1,4 +1,4 @@
-﻿namespace MyBooks.Api.Services
+﻿namespace MyBooks.Api.Options
 {
     /// <summary>
     /// 

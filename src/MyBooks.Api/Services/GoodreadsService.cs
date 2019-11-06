@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using MyBooks.Api.Exceptions;
+using MyBooks.Api.Options;
 using MyBooks.Dto.Goodreads;
 
 namespace MyBooks.Api.Services
@@ -15,17 +17,19 @@ namespace MyBooks.Api.Services
     public class GoodreadsService
     {
         private readonly HttpClient _httpClient;
-        private readonly GoodreadsOptions _options;
+        private readonly GoodreadsOptions _goodreadsOptions;
 
         /// <summary>
         /// 
         /// </summary>
-        public GoodreadsService(HttpClient httpClient, IOptions<GoodreadsOptions> optionsMonitor)
+        public GoodreadsService(
+            HttpClient httpClient,
+            IOptions<GoodreadsOptions> options)
         {
             _httpClient = httpClient;
-            _options = optionsMonitor.Value;
+            _goodreadsOptions = options.Value;
 
-            _httpClient.BaseAddress = new Uri(_options.BaseUrl);
+            _httpClient.BaseAddress = new Uri(_goodreadsOptions.BaseUrl);
         }
         
         // TODO: Define methods to get books, authors etc.
@@ -37,7 +41,7 @@ namespace MyBooks.Api.Services
         {
             var query = new Dictionary<string, string>
             {
-                ["key"] = _options.Key,
+                ["key"] = _goodreadsOptions.Key,
                 ["q"] = searchTerm
             };
 
@@ -65,7 +69,7 @@ namespace MyBooks.Api.Services
         {
             var query = new Dictionary<string, string>
             {
-                ["key"] = _options.Key,
+                ["key"] = _goodreadsOptions.Key,
                 ["id"] = id
             };
 

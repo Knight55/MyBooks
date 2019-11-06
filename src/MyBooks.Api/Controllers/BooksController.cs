@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MyBooks.Api.Exceptions;
 using MyBooks.Api.Services;
 using MyBooks.Bll.Exceptions;
 using MyBooks.Bll.Services;

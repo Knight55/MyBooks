@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyBooks.Api
+namespace MyBooks.Api.Exceptions
 {
     /// <summary>
     /// 

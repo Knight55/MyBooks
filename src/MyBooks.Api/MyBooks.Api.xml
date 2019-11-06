@@ -91,23 +91,23 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="T:MyBooks.Api.GoodreadsEntityNotFoundException">
+        <member name="T:MyBooks.Api.Exceptions.GoodreadsEntityNotFoundException">
             <summary>
             
             </summary>
         </member>
-        <member name="M:MyBooks.Api.GoodreadsEntityNotFoundException.#ctor">
+        <member name="M:MyBooks.Api.Exceptions.GoodreadsEntityNotFoundException.#ctor">
             <summary>
             
             </summary>
         </member>
-        <member name="M:MyBooks.Api.GoodreadsEntityNotFoundException.#ctor(System.String)">
+        <member name="M:MyBooks.Api.Exceptions.GoodreadsEntityNotFoundException.#ctor(System.String)">
             <summary>
             
             </summary>
             <param name="message"></param>
         </member>
-        <member name="M:MyBooks.Api.GoodreadsEntityNotFoundException.#ctor(System.String,System.Exception)">
+        <member name="M:MyBooks.Api.Exceptions.GoodreadsEntityNotFoundException.#ctor(System.String,System.Exception)">
             <summary>
             
             </summary>
@@ -124,6 +124,26 @@
             
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:MyBooks.Api.Options.GoodreadsOptions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:MyBooks.Api.Options.GoodreadsOptions.BaseUrl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:MyBooks.Api.Options.GoodreadsOptions.Key">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:MyBooks.Api.Options.GoodreadsOptions.Secret">
+            <summary>
+            
+            </summary>
         </member>
         <member name="T:MyBooks.Api.Program">
             <summary>
@@ -143,32 +163,12 @@
             <param name="args"></param>
             <returns></returns>
         </member>
-        <member name="T:MyBooks.Api.Services.GoodreadsOptions">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:MyBooks.Api.Services.GoodreadsOptions.BaseUrl">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:MyBooks.Api.Services.GoodreadsOptions.Key">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:MyBooks.Api.Services.GoodreadsOptions.Secret">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="T:MyBooks.Api.Services.GoodreadsService">
             <summary>
             
             </summary>
         </member>
-        <member name="M:MyBooks.Api.Services.GoodreadsService.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Options.IOptionsMonitor{MyBooks.Api.Services.GoodreadsOptions})">
+        <member name="M:MyBooks.Api.Services.GoodreadsService.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Options.IOptions{MyBooks.Api.Options.GoodreadsOptions})">
             <summary>
             
             </summary>

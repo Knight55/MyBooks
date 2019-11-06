@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-using Hangfire;
-using Hangfire.SqlServer;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,9 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MyBooks.Api.Mapping;
+using MyBooks.Api.Options;
 using MyBooks.Api.Services;
 using MyBooks.Dal.Context;
 using MyBooks.Bll.Exceptions;
@@ -107,8 +106,8 @@ namespace MyBooks.Api
             //        options.ApiName = "myBooksApi";
             //        options.ApiSecret = "secret";
             //    });
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
                     options.Authority = "http://localhost:5001";
                     options.RequireHttpsMetadata = false;
