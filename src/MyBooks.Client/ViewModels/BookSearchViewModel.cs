@@ -37,12 +37,16 @@ namespace MyBooks.Client.ViewModels
         public ReactiveCommand<Book, Unit> GoToBookDetails { get; }
         public ReactiveCommand<int, Unit> DeleteBookCommand { get; }
 
-        public BookSearchViewModel(IScreen hostScreen, IMyBooksApiClient myBooksApiClient, ILogger<BookSearchViewModel> logger)
+        public BookSearchViewModel(
+            IScreen hostScreen,
+            IMyBooksApiClient myBooksApiClient,
+            ILogger<BookSearchViewModel> logger)
         {
             HostScreen = hostScreen;
             _myBooksApiClient = myBooksApiClient;
             _logger = logger;
 
+            // TODO: Create book details view model only from the ID of the book!
             GoToBookDetails = ReactiveCommand.CreateFromTask<Book>(async b =>
             {
                 var bookDetailsViewModel = Locator.Current.GetService<BookDetailsViewModel>();

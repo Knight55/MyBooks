@@ -30,7 +30,7 @@ namespace MyBooks.Client.Services
             var discoveryResponse = await client.GetDiscoveryDocumentAsync();
             if (discoveryResponse.IsError)
             {
-                _logger.LogInformation($"Error while getting discovery document: {discoveryResponse.Error}");
+                _logger.LogError($"Error while getting discovery document: {discoveryResponse.Error}");
             }
             else
             {
@@ -46,9 +46,17 @@ namespace MyBooks.Client.Services
                     Scope = _tokenRequestOptions.Scope
                 });
 
+                //var tokenResponse2 = await client.RequestAuthorizationCodeTokenAsync(new AuthorizationCodeTokenRequest
+                //{
+                //    Address = discoveryResponse.TokenEndpoint,
+
+                //    ClientId = _tokenRequestOptions.ClientId,
+                //    ClientSecret = _tokenRequestOptions.ClientSecret
+                //});
+
                 if (tokenResponse.IsError)
                 {
-                    _logger.LogInformation($"Error while getting token: {tokenResponse.Error}");
+                    _logger.LogError($"Error while getting token: {tokenResponse.Error}");
                 }
                 else
                 {
