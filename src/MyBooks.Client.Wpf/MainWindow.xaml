@@ -6,7 +6,6 @@
                    xmlns:rxui="http://reactiveui.net"
                    xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
                    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                   xmlns:viewModels="clr-namespace:MyBooks.Client.ViewModels;assembly=MyBooks.Client"
                    mc:Ignorable="d"
                    Title="My Books" MinHeight="360" MinWidth="640"
                    ShowIconOnTitleBar="True"
@@ -19,9 +18,13 @@
             <Button>
                 <iconPacks:Material Kind="Settings"></iconPacks:Material>
             </Button>
-            <Button x:Name="UserManagerButton">
+            <Button x:Name="userManagerButton">
                 <iconPacks:FontAwesome Kind="UserAltSolid"></iconPacks:FontAwesome>
             </Button>
+            <StackPanel Margin="3, 0" x:Name="userStackPanel" Orientation="Horizontal">
+                <iconPacks:FontAwesome Kind="UserSecretSolid" />
+                <TextBlock x:Name="userNameTextBlock" Margin="5, 0" VerticalAlignment="Center" />
+            </StackPanel>
         </metro:WindowCommands>
     </metro:MetroWindow.RightWindowCommands>
 
@@ -98,7 +101,7 @@
 
             </Grid.Resources>
 
-            <metro:HamburgerMenu x:Name="HamburgerMenu"
+            <metro:HamburgerMenu x:Name="hamburgerMenu"
                                  ItemTemplate="{StaticResource MenuItemTemplate}"
                                  OptionsItemTemplate="{StaticResource OptionsMenuItemTemplate}"
                                  ItemClick="HamburgerMenu_OnItemClick"
@@ -125,7 +128,7 @@
 
                         <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=BookSearch}" Label="Search" ToolTip="Search books">
                             <metro:HamburgerMenuIconItem.Tag>
-                                <rxui:RoutedViewHost x:Name="ViewHost"
+                                <rxui:RoutedViewHost x:Name="viewHost"
                                                      HorizontalContentAlignment="Stretch"
                                                      VerticalContentAlignment="Stretch">
                                 </rxui:RoutedViewHost>

@@ -13,8 +13,6 @@ namespace MyBooks.Client.Wpf
     /// </summary>
     public partial class MainWindow : MetroWindow, IViewFor<MainViewModel>
     {
-        //private OidcClient _oidcClient = null;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -22,13 +20,24 @@ namespace MyBooks.Client.Wpf
 
             this.WhenActivated(disposableRegistration =>
             {
-                this.Bind(ViewModel, vm => vm.Router, v => v.ViewHost.Router)
+                this.Bind(ViewModel, vm => vm.Router, v => v.viewHost.Router)
                     .DisposeWith(disposableRegistration);
 
-                this.BindCommand(ViewModel, vm => vm.UserManagerCommand, v => v.UserManagerButton)
+                this.BindCommand(ViewModel, vm => vm.UserManagerCommand, v => v.userManagerButton)
                     .DisposeWith(disposableRegistration);
 
-                ViewHost.Router.Navigate.Execute(Locator.Current.GetService<BookSearchViewModel>());
+                this.OneWayBind(ViewModel, vm => vm.IsUserLoggedIn, v => v.userStackPanel.Visibility,
+                        conversionHint: BooleanToVisibilityHint.None)
+                    .DisposeWith(disposableRegistration);
+
+                this.OneWayBind(ViewModel, vm => vm.IsUserLoggedIn, v => v.userManagerButton.Visibility,
+                        conversionHint: BooleanToVisibilityHint.Inverse)
+                    .DisposeWith(disposableRegistration);
+
+                this.OneWayBind(ViewModel, vm => vm.UserName, v => v.userNameTextBlock.Text)
+                    .DisposeWith(disposableRegistration);
+
+                viewHost.Router.Navigate.Execute(Locator.Current.GetService<BookSearchViewModel>());
             });
         }
 
@@ -53,6 +62,7 @@ namespace MyBooks.Client.Wpf
             newBookWindow.Show();
         }
 
+        // TODO: Switch this to ReactiveCommand in MainViewModel
         /// <summary>
         /// 
         /// </summary>
@@ -60,47 +70,19 @@ namespace MyBooks.Client.Wpf
         /// <param name="args"></param>
         //private async void OnLogin(object sender, RoutedEventArgs args)
         //{
-        //    var options = new OidcClientOptions()
-        //    {
-        //        Authority = /*"https://demo.identityserver.io/",*/ "http://localhost:5001/",
-        //        ClientId = "native.code",
-        //        Scope = "openid profile email",
-        //        RedirectUri = "https://notused",
-        //        ResponseMode = OidcClientOptions.AuthorizeResponseMode.FormPost,
-        //        Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode,
-        //        Browser = new WpfEmbeddedBrowser()
-        //    };
-
-        //    _oidcClient = new OidcClient(options);
-
-        //    LoginResult result;
-        //    try
-        //    {
-        //        result = await _oidcClient.LoginAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine($"Unexpected Error: {ex.Message}");
-        //        return;
-        //    }
-
-        //    if (result.IsError)
-        //    {
-        //        if (result.Error == "UserCancel")
-        //        {
-        //            Debug.WriteLine("The sign-in window was closed before authorization was completed.");
-        //        }
-        //        else
-        //        {
-        //            Debug.WriteLine($"Error: {result.Error}");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        var name = result.User.Identity.Name;
-        //        Debug.WriteLine($"Hello {name}");
-        //    }
         //}
+
+        // TODO: Move event handlers to MainViewModel
+        private void HamburgerMenu_OnItemClick(object sender, ItemClickEventArgs args)
+        {
+            hamburgerMenu.Content = args.ClickedItem;
+            hamburgerMenu.IsPaneOpen = false;
+        }
+
+        private void HamburgerMenu_OnOptionsItemClick(object sender, ItemClickEventArgs args)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public static readonly DependencyProperty ViewModelProperty =
             DependencyProperty.Register(
@@ -120,17 +102,6 @@ namespace MyBooks.Client.Wpf
         {
             get => ViewModel;
             set => ViewModel = (MainViewModel) value;
-        }
-
-        private void HamburgerMenu_OnItemClick(object sender, ItemClickEventArgs args)
-        {
-            HamburgerMenu.Content = args.ClickedItem;
-            HamburgerMenu.IsPaneOpen = false;
-        }
-
-        private void HamburgerMenu_OnOptionsItemClick(object sender, ItemClickEventArgs args)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

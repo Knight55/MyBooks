@@ -1,4 +1,5 @@
 ﻿using System.Reactive;
+using System.Security.Claims;
 using Microsoft.Extensions.Logging;
 using MyBooks.Client.Services;
 using ReactiveUI;
@@ -12,6 +13,21 @@ namespace MyBooks.Client.ViewModels
     {
         private readonly ILogger<MainViewModel> _logger;
         private readonly ITokenService _tokenService;
+        private readonly IUserManagerService _userManagerService;
+
+        private bool _isUserLoggedIn;
+        public bool IsUserLoggedIn
+        {
+            get => _isUserLoggedIn;
+            set => this.RaiseAndSetIfChanged(ref _isUserLoggedIn, value);
+        }
+
+        private string _userName = "asd";
+        public string UserName
+        {
+            get => _userName;
+            set => this.RaiseAndSetIfChanged(ref _userName, value);
+        }
 
         public RoutingState Router { get; }
 
@@ -19,10 +35,12 @@ namespace MyBooks.Client.ViewModels
 
         public MainViewModel(
             ILogger<MainViewModel> logger,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            IUserManagerService userManagerService)
         {
             _logger = logger;
             _tokenService = tokenService;
+            _userManagerService = userManagerService;
 
             Router = new RoutingState();
 
@@ -30,7 +48,12 @@ namespace MyBooks.Client.ViewModels
                 async () =>
                 {
                     _logger.LogInformation($"User manager called.");
-                    await _tokenService.GetToken();
+                    await _userManagerService.Login();
+                    if (_userManagerService.LoginResult != null && !_userManagerService.LoginResult.IsError)
+                    {
+                        IsUserLoggedIn = true;
+                        UserName = _userManagerService.LoginResult.User.Identity.Name;
+                    }
                 });
         }
     }
