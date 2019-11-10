@@ -15,33 +15,25 @@
 
     <metro:MetroWindow.RightWindowCommands>
         <metro:WindowCommands>
-            <Button>
-                <iconPacks:Material Kind="Settings"></iconPacks:Material>
+            <Button x:Name="settingsButton">
+                <iconPacks:Material Kind="Settings" />
             </Button>
             <Button x:Name="userManagerButton">
-                <iconPacks:FontAwesome Kind="UserAltSolid"></iconPacks:FontAwesome>
+                <iconPacks:FontAwesome Kind="UserAltSolid" />
             </Button>
             <StackPanel Margin="3, 0" x:Name="userStackPanel" Orientation="Horizontal">
-                <iconPacks:FontAwesome Kind="UserSecretSolid" />
+                <iconPacks:FontAwesome Kind="UserAltSolid" />
                 <TextBlock x:Name="userNameTextBlock" Margin="5, 0" VerticalAlignment="Center" />
             </StackPanel>
         </metro:WindowCommands>
     </metro:MetroWindow.RightWindowCommands>
 
-    <metro:MetroWindow.LeftWindowCommands>
-        <metro:WindowCommands>
-            <Button>
-                <iconPacks:FontAwesome Kind="BeerSolid"></iconPacks:FontAwesome>
-            </Button>
-        </metro:WindowCommands>
-    </metro:MetroWindow.LeftWindowCommands>
-
     <metro:MetroWindow.IconTemplate>
         <DataTemplate>
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                <iconPacks:Material Kind="Book"
-                                    Width="20"
-                                    Height="20"/>
+                <iconPacks:PackIconFontAwesome Kind="BookOpenSolid"
+                                               Width="20"
+                                               Height="20"/>
             </Grid>
         </DataTemplate>
     </metro:MetroWindow.IconTemplate>
