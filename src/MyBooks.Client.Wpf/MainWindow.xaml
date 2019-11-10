@@ -13,21 +13,7 @@
                    WindowStartupLocation="CenterScreen"
                    ResizeMode="CanResizeWithGrip">
 
-    <metro:MetroWindow.RightWindowCommands>
-        <metro:WindowCommands>
-            <Button x:Name="settingsButton">
-                <iconPacks:Material Kind="Settings" />
-            </Button>
-            <Button x:Name="userManagerButton">
-                <iconPacks:FontAwesome Kind="UserAltSolid" />
-            </Button>
-            <StackPanel Margin="3, 0" x:Name="userStackPanel" Orientation="Horizontal">
-                <iconPacks:FontAwesome Kind="UserAltSolid" />
-                <TextBlock x:Name="userNameTextBlock" Margin="5, 0" VerticalAlignment="Center" />
-            </StackPanel>
-        </metro:WindowCommands>
-    </metro:MetroWindow.RightWindowCommands>
-
+    <!-- Window icon -->
     <metro:MetroWindow.IconTemplate>
         <DataTemplate>
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -38,8 +24,29 @@
         </DataTemplate>
     </metro:MetroWindow.IconTemplate>
 
-    <DockPanel>
+    <!-- Right window commands -->
+    <metro:MetroWindow.RightWindowCommands>
+        <metro:WindowCommands>
+            <Button x:Name="settingsButton" Click="OnSettingsButtonClicked">
+                <iconPacks:Material Kind="Settings" />
+            </Button>
+            <Button x:Name="userManagerButton">
+                <iconPacks:FontAwesome Kind="UserAltSolid" />
+            </Button>
+            <StackPanel Margin="3, 0" x:Name="userStackPanel" Orientation="Horizontal">
+                <!--<iconPacks:FontAwesome Kind="UserAltSolid" />-->
+                <Ellipse Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="userAvatarImage" Stretch="UniformToFill" />
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock x:Name="userNameTextBlock" Margin="5, 0" VerticalAlignment="Center" />
+            </StackPanel>
+        </metro:WindowCommands>
+    </metro:MetroWindow.RightWindowCommands>
 
+    <!--  Content  -->
+    <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Header="Exit" Click="OnExit" />
@@ -48,7 +55,6 @@
 
         <Grid>
             <Grid.Resources>
-
                 <DataTemplate x:Key="MenuItemTemplate"
                               DataType="{x:Type metro:HamburgerMenuIconItem}">
                     <Grid Height="48">
@@ -90,7 +96,6 @@
                                    Text="{Binding Label}" />
                     </Grid>
                 </DataTemplate>
-
             </Grid.Resources>
 
             <metro:HamburgerMenu x:Name="hamburgerMenu"
@@ -164,9 +169,7 @@
                         </Grid>
                     </DataTemplate>
                 </metro:HamburgerMenu.ContentTemplate>
-
             </metro:HamburgerMenu>
         </Grid>
-
     </DockPanel>
 </metro:MetroWindow>

@@ -37,8 +37,21 @@ namespace MyBooks.Client.Wpf
                 this.OneWayBind(ViewModel, vm => vm.UserName, v => v.userNameTextBlock.Text)
                     .DisposeWith(disposableRegistration);
 
+                this.OneWayBind(ViewModel, vm => vm.UserAvatarImageUrl, v => v.userAvatarImage)
+                    .DisposeWith(disposableRegistration);
+
                 viewHost.Router.Navigate.Execute(Locator.Current.GetService<BookSearchViewModel>());
             });
+        }
+
+        /// <summary>
+        /// Exits the application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnExit(object sender, RoutedEventArgs args)
+        {
+            Application.Current.Shutdown();
         }
 
         /// <summary>
@@ -46,9 +59,10 @@ namespace MyBooks.Client.Wpf
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
-        private void OnExit(object sender, RoutedEventArgs args)
+        private void OnSettingsButtonClicked(object sender, RoutedEventArgs args)
         {
-            Application.Current.Shutdown();
+            var settingsWindow = new SettingsWindow();
+            settingsWindow.Show();
         }
 
         // TODO: Move event handlers to MainViewModel

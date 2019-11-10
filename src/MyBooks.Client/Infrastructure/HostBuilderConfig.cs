@@ -109,6 +109,7 @@ namespace MyBooks.Client.Infrastructure
                     services.AddSingleton(provider => (MainViewModel) provider.GetService<IScreen>());
                     services.AddTransient<BookSearchViewModel>();
                     services.AddTransient<BookDetailsViewModel>();
+                    services.AddTransient<SettingsViewModel>();
 
                     // Splat and ReactiveUI
                     services.UseMicrosoftDependencyResolver();
