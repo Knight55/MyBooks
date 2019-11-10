@@ -7,6 +7,8 @@ namespace MyBooks.Client.Services
     {
         LoginResult LoginResult { get; set; }
 
-        Task Login();
+        Task LoginAsync();
+        Task LogoutAsync();
+        Task GetUserInfoAsync(string accessToken);
     }
 }

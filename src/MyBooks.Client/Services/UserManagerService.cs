@@ -27,7 +27,7 @@ namespace MyBooks.Client.Services
             _oidcClient = new OidcClient(_oidcClientOptions);
         }
 
-        public async Task Login()
+        public async Task LoginAsync()
         {
             try
             {
@@ -54,6 +54,21 @@ namespace MyBooks.Client.Services
             {
                 var name = LoginResult.User.Identity.Name;
                 _logger.LogInformation($"User {name} logged in successfully.");
+            }
+        }
+
+        public async Task LogoutAsync()
+        {
+            throw new NotImplementedException("Logout is not implemented yet.");
+        }
+
+        public async Task GetUserInfoAsync(string accessToken)
+        {
+            var userInfoResult = await _oidcClient.GetUserInfoAsync(accessToken);
+            // TODO: error handling
+            if (!userInfoResult.IsError)
+            {
+                _logger.LogInformation($"User info request was successful: {userInfoResult}");
             }
         }
     }
