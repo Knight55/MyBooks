@@ -35,7 +35,6 @@ namespace MyBooks.Client.ViewModels
         public bool IsAvailable => _isAvailable.Value;
 
         public ReactiveCommand<Book, Unit> GoToBookDetails { get; }
-        public ReactiveCommand<int, Unit> DeleteBookCommand { get; }
 
         public BookSearchViewModel(
             IScreen hostScreen,
@@ -58,8 +57,6 @@ namespace MyBooks.Client.ViewModels
             GoToBookDetails.ThrownExceptions
                 .Subscribe(x =>
                     _logger.LogError($"Exception occured when executing GoToBookDetails: {x.Message}", x));
-
-            DeleteBookCommand = ReactiveCommand.Create<int>(DeleteBook);
 
             _results = this
                 .WhenAnyValue(x => x.SearchTerm)
@@ -97,16 +94,6 @@ namespace MyBooks.Client.ViewModels
                 books = await _myBooksApiClient.SearchBooksAsync(searchTerm).ConfigureAwait(false);
             }
             return books;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private void DeleteBook(int id)
-        {
-            _myBooksApiClient.DeleteBookAsync(id);
         }
     }
 }

@@ -90,8 +90,7 @@ namespace MyBooks.Client.Infrastructure
                         ?.GetTypes().FirstOrDefault(t => typeof(IBrowser).IsAssignableFrom(t));
                     services.Configure<OidcClientOptions>(options =>
                     {
-                        options.Authority = "http://localhost:5001/";
-                        //"https://demo.identityserver.io/";
+                        options.Authority = tokenServiceUrl;
                         options.ClientId = "native.code";
                         options.Scope = "openid profile email";
                         options.RedirectUri = "https://notused";
@@ -110,7 +109,6 @@ namespace MyBooks.Client.Infrastructure
                     services.AddSingleton(provider => (MainViewModel) provider.GetService<IScreen>());
                     services.AddTransient<BookSearchViewModel>();
                     services.AddTransient<BookDetailsViewModel>();
-                    services.AddTransient<NewBookViewModel>();
 
                     // Splat and ReactiveUI
                     services.UseMicrosoftDependencyResolver();

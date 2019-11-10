@@ -51,27 +51,6 @@ namespace MyBooks.Client.Wpf
             Application.Current.Shutdown();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        private void OnAddNewBook(object sender, RoutedEventArgs args)
-        {
-            var newBookWindow = new NewBookWindow();
-            newBookWindow.Show();
-        }
-
-        // TODO: Switch this to ReactiveCommand in MainViewModel
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        //private async void OnLogin(object sender, RoutedEventArgs args)
-        //{
-        //}
-
         // TODO: Move event handlers to MainViewModel
         private void HamburgerMenu_OnItemClick(object sender, ItemClickEventArgs args)
         {

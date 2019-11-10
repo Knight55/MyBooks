@@ -6,9 +6,11 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Extensions.Logging;
 using MyBooks.Client.ViewModels;
 using MyBooks.Dto.Dtos;
 using ReactiveUI;
+using Splat;
 
 namespace MyBooks.Client.Wpf.Views
 {
@@ -17,9 +19,13 @@ namespace MyBooks.Client.Wpf.Views
     /// </summary>
     public partial class BookSearchView : ReactiveUserControl<BookSearchViewModel>
     {
+        private readonly ILogger<BookSearchView> _logger;
+
         public BookSearchView()
         {
             InitializeComponent();
+
+            _logger = Locator.Current.GetService<ILogger<BookSearchView>>();
 
             this.WhenActivated(disposableRegistration =>
             {
@@ -39,26 +45,11 @@ namespace MyBooks.Client.Wpf.Views
                         var book = (Book)listBox?.SelectedItem;
                         if (book != null)
                         {
-                            Debug.WriteLine($"Clicked on book: {book?.Title}");
+                            _logger.LogDebug($"Clicked on book: {book}");
                             ViewModel.GoToBookDetails.Execute(book).Subscribe();
                         }
                     });
             });
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        private void OnDeleteButtonClicked(object sender, RoutedEventArgs args)
-        {
-            var button = (Button) sender;
-            var book = (Book) button?.DataContext;
-            if (book != null)
-            {
-                ViewModel.DeleteBookCommand.Execute(book.Id).Subscribe();
-            }
         }
     }
 }

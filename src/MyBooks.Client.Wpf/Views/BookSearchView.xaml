@@ -43,7 +43,6 @@
                                 <LineBreak />
                                 <Run Text="{Binding Genre}" FontSize="12"/>
                         </TextBlock>
-                        <Button x:Name="deleteButton" Click="OnDeleteButtonClicked" Grid.Column="2" Content="Delete" VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
