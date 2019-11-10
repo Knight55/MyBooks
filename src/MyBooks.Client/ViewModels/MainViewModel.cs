@@ -1,8 +1,9 @@
-﻿using System.Reactive;
-using System.Security.Claims;
+﻿using System;
+using System.Reactive;
 using Microsoft.Extensions.Logging;
 using MyBooks.Client.Services;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace MyBooks.Client.ViewModels
 {
@@ -15,19 +16,12 @@ namespace MyBooks.Client.ViewModels
         private readonly ITokenService _tokenService;
         private readonly IUserManagerService _userManagerService;
 
-        private bool _isUserLoggedIn;
-        public bool IsUserLoggedIn
-        {
-            get => _isUserLoggedIn;
-            set => this.RaiseAndSetIfChanged(ref _isUserLoggedIn, value);
-        }
+        [Reactive] public bool IsUserLoggedIn { get; set; }
 
-        private string _userName = "asd";
-        public string UserName
-        {
-            get => _userName;
-            set => this.RaiseAndSetIfChanged(ref _userName, value);
-        }
+        [Reactive] public string UserName { get; set; }
+
+        [Reactive]public string UserAvatarImageUrl { get; set; } =
+            "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50";
 
         public RoutingState Router { get; }
 
@@ -48,11 +42,12 @@ namespace MyBooks.Client.ViewModels
                 async () =>
                 {
                     _logger.LogInformation($"User manager called.");
-                    await _userManagerService.Login();
+                    await _userManagerService.LoginAsync();
                     if (_userManagerService.LoginResult != null && !_userManagerService.LoginResult.IsError)
                     {
                         IsUserLoggedIn = true;
                         UserName = _userManagerService.LoginResult.User.Identity.Name;
+                        await _userManagerService.GetUserInfoAsync(_userManagerService.LoginResult.AccessToken);
                     }
                 });
         }
