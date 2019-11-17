@@ -146,7 +146,7 @@ namespace MyBooks.Api
 
             // Services
             services.Configure<GoodreadsOptions>(Configuration.GetSection("Goodreads"));
-            services.AddHttpClient<GoodreadsService>();
+            services.AddHttpClient<IGoodreadsService, GoodreadsService>();
 
             services.AddSingleton(MapperConfig.Configure());
             services.AddTransient<IBookService, BookService>();

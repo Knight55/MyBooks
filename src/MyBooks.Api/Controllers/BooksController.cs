@@ -24,20 +24,20 @@ namespace MyBooks.Api.Controllers
     {
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
-        private readonly GoodreadsService _goodreadsService;
+        private readonly IGoodreadsService _goodreadsService;
         private readonly ILogger<BooksController> _logger;
 
         /// <summary>
-        /// 
+        /// Constructor.
         /// </summary>
-        /// <param name="bookService"></param>
-        /// <param name="mapper"></param>
-        /// <param name="goodreadsService"></param>
-        /// /// <param name="logger"></param>
+        /// <param name="bookService">The book service.</param>
+        /// <param name="mapper">The object mapper.</param>
+        /// <param name="goodreadsService">The goodreads API service.</param>
+        /// <param name="logger">The logger.</param>
         public BooksController(
             IBookService bookService,
             IMapper mapper,
-            GoodreadsService goodreadsService,
+            IGoodreadsService goodreadsService,
             ILogger<BooksController> logger)
         {
             _bookService = bookService;
@@ -47,9 +47,11 @@ namespace MyBooks.Api.Controllers
         }
 
         /// <summary>
-        /// Get a list of all books.
+        /// Gets a list of all books.
         /// </summary>
-        /// <returns>Returns all books.</returns>
+        /// <returns>
+        /// Returns all books.
+        /// </returns>
         [HttpGet]
         [ProducesResponseType(typeof(Book), (int)HttpStatusCode.OK)]
         public IActionResult Get()
@@ -58,10 +60,12 @@ namespace MyBooks.Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Gets a specific book with it's goodreads identifier.
         /// </summary>
-        /// <param name="goodreadsId"></param>
-        /// <returns></returns>
+        /// <param name="id">The goodreads identifier of the book.</param>
+        /// <returns>
+        /// A specific book with the given identifier.
+        /// </returns>
         [HttpGet("Goodreads/{id}")]
         [ProducesResponseType(typeof(Book), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetByGoodreadsId(string id)
@@ -94,10 +98,12 @@ namespace MyBooks.Api.Controllers
         }
 
         /// <summary>
-        /// Get a specific book with the given identifier.
+        /// Gets a specific book with the given identifier.
         /// </summary>
         /// <param name="id">Identifier of the book.</param>
-        /// <returns>Returns a specific book with the given identifier.</returns>
+        /// <returns>
+        /// Returns a specific book with the given identifier.
+        /// </returns>
         /// <response code="200">Returns a specific book with the given identifier.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Book), (int)HttpStatusCode.OK)]
@@ -115,12 +121,6 @@ namespace MyBooks.Api.Controllers
         [ProducesResponseType(typeof(List<Book>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Search(string searchTerm)
         {
-            //var books = _bookService.SearchBooks(searchTerm);
-            //if (books.Any())
-            //{
-            //    return Ok(_mapper.Map<List<Book>>(books));
-            //}
-
             try
             {
                 var response = await _goodreadsService.SearchBooks(searchTerm);
@@ -131,7 +131,7 @@ namespace MyBooks.Api.Controllers
 
                 return Ok(books);
             }
-            catch (GoodreadsEntityNotFoundException e)
+            catch (GoodreadsEntityNotFoundException)
             {
                 return NotFound();
             }

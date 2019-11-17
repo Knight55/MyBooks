@@ -32,34 +32,40 @@
             Public API controller for books.
             </summary>
         </member>
-        <member name="M:MyBooks.Api.Controllers.BooksController.#ctor(MyBooks.Bll.Services.IBookService,AutoMapper.IMapper,MyBooks.Api.Services.GoodreadsService,Microsoft.Extensions.Logging.ILogger{MyBooks.Api.Controllers.BooksController})">
+        <member name="M:MyBooks.Api.Controllers.BooksController.#ctor(MyBooks.Bll.Services.IBookService,AutoMapper.IMapper,MyBooks.Api.Services.IGoodreadsService,Microsoft.Extensions.Logging.ILogger{MyBooks.Api.Controllers.BooksController})">
             <summary>
-            
+            Constructor.
             </summary>
-            <param name="bookService"></param>
-            <param name="mapper"></param>
-            <param name="goodreadsService"></param>
-            /// <param name="logger"></param>
+            <param name="bookService">The book service.</param>
+            <param name="mapper">The object mapper.</param>
+            <param name="goodreadsService">The goodreads API service.</param>
+            <param name="logger">The logger.</param>
         </member>
         <member name="M:MyBooks.Api.Controllers.BooksController.Get">
             <summary>
-            Get a list of all books.
+            Gets a list of all books.
             </summary>
-            <returns>Returns all books.</returns>
+            <returns>
+            Returns all books.
+            </returns>
         </member>
         <member name="M:MyBooks.Api.Controllers.BooksController.GetByGoodreadsId(System.String)">
             <summary>
-            
+            Gets a specific book with it's goodreads identifier.
             </summary>
-            <param name="goodreadsId"></param>
-            <returns></returns>
+            <param name="id">The goodreads identifier of the book.</param>
+            <returns>
+            A specific book with the given identifier.
+            </returns>
         </member>
         <member name="M:MyBooks.Api.Controllers.BooksController.Get(System.Int32)">
             <summary>
-            Get a specific book with the given identifier.
+            Gets a specific book with the given identifier.
             </summary>
             <param name="id">Identifier of the book.</param>
-            <returns>Returns a specific book with the given identifier.</returns>
+            <returns>
+            Returns a specific book with the given identifier.
+            </returns>
             <response code="200">Returns a specific book with the given identifier.</response>
         </member>
         <member name="M:MyBooks.Api.Controllers.BooksController.Search(System.String)">
@@ -165,26 +171,52 @@
         </member>
         <member name="T:MyBooks.Api.Services.GoodreadsService">
             <summary>
-            
+            Default implementation of <see cref="T:MyBooks.Api.Services.IGoodreadsService"/>.
             </summary>
         </member>
-        <member name="M:MyBooks.Api.Services.GoodreadsService.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Options.IOptions{MyBooks.Api.Options.GoodreadsOptions})">
-            <summary>
-            
-            </summary>
+        <member name="M:MyBooks.Api.Services.GoodreadsService.#ctor(Microsoft.Extensions.Logging.ILogger{MyBooks.Api.Services.GoodreadsService},System.Net.Http.HttpClient,Microsoft.Extensions.Options.IOptions{MyBooks.Api.Options.GoodreadsOptions})">
+            <inheritdoc />
         </member>
         <member name="M:MyBooks.Api.Services.GoodreadsService.SearchBooks(System.String)">
-            <summary>
-            
-            </summary>
-            <returns></returns>
+            <inheritdoc />
         </member>
         <member name="M:MyBooks.Api.Services.GoodreadsService.GetBook(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:MyBooks.Api.Services.GoodreadsService.GetAuthor(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:MyBooks.Api.Services.IGoodreadsService">
             <summary>
-            
+            Public interface for accessing the Goodreads API.
             </summary>
-            <param name="id"></param>
-            <returns></returns>
+        </member>
+        <member name="M:MyBooks.Api.Services.IGoodreadsService.SearchBooks(System.String)">
+            <summary>
+            Searches for books on Goodreads API.
+            </summary>
+            <param name="searchTerm"></param>
+            <returns>
+            A <see cref="T:MyBooks.Dto.Goodreads.GoodreadsResponse"/> containing the books.
+            </returns>
+        </member>
+        <member name="M:MyBooks.Api.Services.IGoodreadsService.GetBook(System.String)">
+            <summary>
+            Gets a specific book from Goodreads.
+            </summary>
+            <param name="id">The identifier of the book.</param>
+            <returns>
+            A <see cref="T:MyBooks.Dto.Goodreads.GoodreadsResponse"/> containing the book.
+            </returns>
+        </member>
+        <member name="M:MyBooks.Api.Services.IGoodreadsService.GetAuthor(System.String)">
+            <summary>
+            Gets a specific author from Goodreads.
+            </summary>
+            <param name="id">The identifier of the author</param>
+            <returns>
+            A <see cref="T:MyBooks.Dto.Goodreads.GoodreadsResponse"/> containing the author.
+            </returns>
         </member>
         <member name="T:MyBooks.Api.Startup">
             <summary>
