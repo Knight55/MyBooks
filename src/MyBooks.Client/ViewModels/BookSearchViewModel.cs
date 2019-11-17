@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using MyBooks.Client.Services;
 using MyBooks.Dto.Dtos;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace MyBooks.Client.ViewModels
@@ -21,12 +21,7 @@ namespace MyBooks.Client.ViewModels
         public string UrlPathSegment => "bookSearch";
         public IScreen HostScreen { get; }
 
-        private string _searchTerm = "";
-        public string SearchTerm
-        {
-            get => _searchTerm;
-            set => this.RaiseAndSetIfChanged(ref _searchTerm, value);
-        }
+        [Reactive] public string SearchTerm { get; set; }
 
         private readonly ObservableAsPropertyHelper<IEnumerable<Book>> _results;
         public IEnumerable<Book> Results => _results.Value;
@@ -45,18 +40,16 @@ namespace MyBooks.Client.ViewModels
             _myBooksApiClient = myBooksApiClient;
             _logger = logger;
 
-            // TODO: Create book details view model only from the ID of the book!
-            GoToBookDetails = ReactiveCommand.CreateFromTask<Book>(async b =>
+            GoToBookDetails = ReactiveCommand.Create<Book>(b =>
             {
                 var bookDetailsViewModel = Locator.Current.GetService<BookDetailsViewModel>();
-                var book = await _myBooksApiClient.GetBookByGoodreadsId(b.GoodreadsId);
-                bookDetailsViewModel.Book = book;
+                bookDetailsViewModel.GoodreadsId = b.GoodreadsId;
                 HostScreen.Router.Navigate.Execute(bookDetailsViewModel).Subscribe();
             });
 
             GoToBookDetails.ThrownExceptions
-                .Subscribe(x =>
-                    _logger.LogError($"Exception occured when executing GoToBookDetails: {x.Message}", x));
+                .Subscribe(ex =>
+                    _logger.LogError($"Exception occurred when executing GoToBookDetails: {ex.Message}", ex));
 
             _results = this
                 .WhenAnyValue(x => x.SearchTerm)
@@ -67,7 +60,9 @@ namespace MyBooks.Client.ViewModels
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .ToProperty(this, x => x.Results);
 
-            _results.ThrownExceptions.Subscribe(ex => { Debug.WriteLine(ex.Message); });
+            _results.ThrownExceptions
+                .Subscribe(ex =>
+                    _logger.LogError($"Exception occurred when getting search results: {ex.Message}", ex));
 
             _isAvailable = this
                 .WhenAnyValue(x => x.Results)
@@ -76,8 +71,7 @@ namespace MyBooks.Client.ViewModels
         }
 
         /// <summary>
-        /// Searching books by their title. If no search term is given then
-        /// returns with every book available.
+        /// Searches books by their title. If no search term is given then returns with every book available.
         /// </summary>
         /// <param name="searchTerm"></param>
         /// <param name="token"></param>
