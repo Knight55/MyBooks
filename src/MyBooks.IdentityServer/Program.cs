@@ -24,7 +24,7 @@ namespace MyBooks.IdentityServer
         /// <param name="args"></param>
         /// <returns></returns>
         public static IHostBuilder CreateWebHostBuilder(string[] args) =>
-            Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
+            Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
