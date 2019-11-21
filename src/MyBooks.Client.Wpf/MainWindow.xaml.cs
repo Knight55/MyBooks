@@ -26,6 +26,9 @@ namespace MyBooks.Client.Wpf
                 this.BindCommand(ViewModel, vm => vm.UserManagerCommand, v => v.userManagerButton)
                     .DisposeWith(disposableRegistration);
 
+                this.BindCommand(ViewModel, vm => vm.LogoutCommand, v => v.userStackPanel, nameof(userStackPanel.MouseDown))
+                    .DisposeWith(disposableRegistration);
+
                 this.OneWayBind(ViewModel, vm => vm.IsUserLoggedIn, v => v.userStackPanel.Visibility,
                         conversionHint: BooleanToVisibilityHint.None)
                     .DisposeWith(disposableRegistration);
@@ -37,7 +40,7 @@ namespace MyBooks.Client.Wpf
                 this.OneWayBind(ViewModel, vm => vm.UserName, v => v.userNameTextBlock.Text)
                     .DisposeWith(disposableRegistration);
 
-                this.OneWayBind(ViewModel, vm => vm.UserAvatarImageUrl, v => v.userAvatarImage)
+                this.OneWayBind(ViewModel, vm => vm.UserAvatarImageUrl, v => v.userAvatarImage.ImageSource)
                     .DisposeWith(disposableRegistration);
 
                 viewHost.Router.Navigate.Execute(Locator.Current.GetService<BookSearchViewModel>());

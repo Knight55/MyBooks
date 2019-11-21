@@ -5,7 +5,7 @@ using Refit;
 
 namespace MyBooks.Client.Services
 {
-    [Headers("api-version: 1.0")]
+    [Headers("api-version: 1.0", "Authorization: Bearer")]
     public interface IMyBooksApiClient
     {
         [Get("/api/Books/{id}")]

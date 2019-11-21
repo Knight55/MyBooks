@@ -94,6 +94,7 @@ namespace MyBooks.Client.Infrastructure
                         options.ClientId = "native.code";
                         options.Scope = "openid profile email";
                         options.RedirectUri = "https://notused";
+                        options.PostLogoutRedirectUri = "https://notused";
                         options.ResponseMode = OidcClientOptions.AuthorizeResponseMode.FormPost;
                         options.Flow = OidcClientOptions.AuthenticationFlow.AuthorizationCode;
                         options.LoggerFactory.AddSerilog();

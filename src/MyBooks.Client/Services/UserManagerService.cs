@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
+using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Browser;
@@ -17,13 +16,15 @@ namespace MyBooks.Client.Services
         private readonly OidcClient _oidcClient;
 
         public LoginResult LoginResult { get; set; }
+        public LogoutResult LogoutResult { get; set; }
 
         public UserManagerService(
             ILogger<UserManagerService> logger,
-            IOptions<OidcClientOptions> oidcClientOptions)
+            IOptions<OidcClientOptions> options)
         {
             _logger = logger;
-            _oidcClientOptions = oidcClientOptions.Value;
+            _oidcClientOptions = options.Value;
+
             _oidcClient = new OidcClient(_oidcClientOptions);
         }
 
@@ -59,7 +60,36 @@ namespace MyBooks.Client.Services
 
         public async Task LogoutAsync()
         {
-            throw new NotImplementedException("Logout is not implemented yet.");
+            try
+            {
+                LogoutResult = await _oidcClient.LogoutAsync(new LogoutRequest
+                {
+                    BrowserDisplayMode = DisplayMode.Hidden,
+                    IdTokenHint = LoginResult.IdentityToken
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error while logging out: {ex.Message}");
+                return;
+            }
+
+            if (LogoutResult.IsError)
+            {
+                if (LogoutResult.Error == "UserCancel")
+                {
+                    _logger.LogError("The sign-in window was closed before authorization was completed.");
+                }
+                else
+                {
+                    _logger.LogInformation($"Error: {LogoutResult.Error}");
+                }
+            }
+            else
+            {
+                _logger.LogInformation($"User {LoginResult.User.Identity.Name} logged out successfully.");
+                LoginResult = null;
+            }
         }
 
         public async Task GetUserInfoAsync(string accessToken)
@@ -69,6 +99,16 @@ namespace MyBooks.Client.Services
             if (!userInfoResult.IsError)
             {
                 _logger.LogInformation($"User info request was successful: {userInfoResult}");
+            }
+        }
+
+        public async Task RefreshAccessTokenAsync(string refreshToken)
+        {
+            var refreshTokenResult = await _oidcClient.RefreshTokenAsync(refreshToken);
+            // TODO: error handling
+            if (!refreshTokenResult.IsError)
+            {
+                _logger.LogInformation($"Successfully refreshed the access token. {refreshTokenResult}");
             }
         }
     }
