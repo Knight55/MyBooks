@@ -22,28 +22,29 @@ namespace MyBooks.Api.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
+        private readonly ILogger<BooksController> _logger;
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
         private readonly IGoodreadsService _goodreadsService;
-        private readonly ILogger<BooksController> _logger;
 
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="logger">The logger.</param>
         /// <param name="bookService">The book service.</param>
         /// <param name="mapper">The object mapper.</param>
         /// <param name="goodreadsService">The goodreads API service.</param>
-        /// <param name="logger">The logger.</param>
         public BooksController(
+            ILogger<BooksController> logger,
             IBookService bookService,
             IMapper mapper,
-            IGoodreadsService goodreadsService,
-            ILogger<BooksController> logger)
+            IGoodreadsService goodreadsService
+            )
         {
+            _logger = logger;
             _bookService = bookService;
             _mapper = mapper;
             _goodreadsService = goodreadsService;
-            _logger = logger;
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace MyBooks.Api.Controllers
         /// Returns all books.
         /// </returns>
         [HttpGet]
-        [ProducesResponseType(typeof(Book), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(List<Book>), (int)HttpStatusCode.OK)]
         public IActionResult Get()
         {
             return Ok(_mapper.Map<List<Book>>(_bookService.GetBooks()));
